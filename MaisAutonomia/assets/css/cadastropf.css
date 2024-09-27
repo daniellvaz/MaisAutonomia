@@ -1,0 +1,16 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+.form-box a{
+    color: deepskyblue;
+}
+.form-box {
+    background-color: #4d9ca3;
+    padding: 20px;
+    padding-top: 10px;
+    padding-bottom: 25px;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 20px;
+}

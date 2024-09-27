@@ -1,0 +1,98 @@
+body{
+    margin: 0px;
+}
+.banzin{
+    position: sticky;
+    border-radius: 0 6px 6px 0;
+    padding-top: 5px;
+    background-color: darkslateblue;
+    width: 600px;
+    height: 200px;
+    opacity: 85%;
+    margin-top: -400px;
+}
+.banzin h1{
+    font-size: 30px;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.banzin h2{
+    font-size: 35px;
+    color: white;
+    font-weight: bold;
+    margin-top: -20px;
+}
+.banner {
+    width: 100%;
+    height: auto; 
+    margin-top: -8px;
+}
+.img-fluid{
+    width: 100%;
+    opacity: 75%;
+}
+section{
+    text-align: justify;
+    margin-top: 210px;
+    margin-left: 10px;
+    width: 100%;
+    font-size: 23px;
+    font-weight: bold;
+    height: auto;
+    max-width: 700px;
+    align-self:  center; 
+}
+section h1{
+    font-size: 45px;
+    text-decoration: underline;
+    color: dodgerblue; 
+}
+.titprof h1{
+    font-size: 35px;
+    margin-left: 940px;
+    margin-top: -780px;
+    position: absolute;
+}
+.boxprof{
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: flex;
+    margin-left: 840px;
+    justify-content: space-between;
+    width: 580px;
+    height: 540px;
+    position: absolute;
+    margin-top:-700px ;
+    border: solid 4px black;
+}
+.prof{  
+    padding-left: 2px;
+    box-shadow: 10px 10px 10px black;
+    border-radius: 12px;
+    margin: 13px;
+    width: calc((100% / 3) - 2rem);
+    height: 230px;
+    background-color: wheat;
+}
+.prof h1{
+    font-size: 20px;
+}
+.prof p{
+    font-size: 10px;
+    text-align: left;
+}
+.row{
+    padding-bottom: 30px;
+    background-color: grey;
+}
+.row h1{
+    font-size: 35px;
+}
+.row p{
+    font-size: 20px;
+}
+.row img{
+    margin-left: 15px;
+    width: 70px;
+}

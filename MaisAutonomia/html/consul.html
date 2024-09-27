@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/pintor.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/footer.css">
+    <title>Mais Autonomia</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/html/index.html">Mais Autonomia</a>
+            <div class="mais"></div>
+            <div class="mais2"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="/html/profissionais.html">Profissionais</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">PF</a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/html/loginpf.html">Entrar como PF</a></li>
+                    <li><a class="dropdown-item" href="/html/cadastropf.html">Cadastrar como PF</a></li>
+                  </ul>
+                </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">PJ</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/html/loginpj.html">Entrar como PJ</a></li>
+                  <li><a class="dropdown-item" href="/html/cadastropj.html">Cadastrar como PJ</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/html/feedback.html">Avalie-nos</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="/assets/images/graf-financ.jpg" style="height: 300px;" class="img-fluid rounded-start" alt="Pintor">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Consultor Financeiro</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Maria Cristina</li>
+                <li class="list-group-item">mcris@gmail.com</li>
+                <li class="list-group-item">(38) 93434-8686</li>
+                <li class="list-group-item">Especialização em contabilidade</li>
+                <br/>
+              </ul>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Quero contratar!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Contato</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-4">
+            <label for="recipient-name" class="col-form-label">Salário:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-4">
+          <label for="data">Data:</label>
+            <input id="data" type="date" min="2024-06-13"/>
+          </div>
+          <div class="mb-4">
+            <label for="message-text" class="col-form-label">Mensagem:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <footer>Mais Autonomia&trade;.Todos os Direitos Reservados.&#169;</footer>
+</body>
+</html>

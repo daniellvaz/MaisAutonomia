@@ -1,0 +1,28 @@
+.btn{
+    background-color: darkgreen;
+    color: antiquewhite;
+}
+.btn:hover{
+    background-color: mediumseagreen;
+}
+.form-control{
+    width: 118px;
+}
+.card{
+    margin-top: 15px;
+    border: none;
+    margin-bottom: 15px;
+    margin-left: 25px;
+    background-color: lightgrey;
+}
+.card img{
+    height: 180px;
+   width: 288px;
+   margin-left:  -12px;
+}
+.accordion-item{
+    background-color: lightgrey;
+}
+.accordion button{
+    background-color: lightgrey;
+}
