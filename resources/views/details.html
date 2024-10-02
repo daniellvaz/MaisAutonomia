@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Detalhes do Serviço</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url() }}">
+                <img class="logo" src="{{ url('/assets/images/logo.svg') }}" alt="Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav d-flex gap-3 align-items-center">
+                    <li class="nav-item">
+                        <img src="avatar.png" alt="Avatar" class="rounded-circle" width="40" height="40">
+                    </li>
+                    <li class="nav-item">
+                        <span class="navbar-text">Nome do Usuário</span>
+                    </li>
+                    <li class="nav-item">
+                        <select class="form-select" aria-label="Perfil">
+                            <option selected>Autônomo</option>
+                            <option>Cliente</option>
+                        </select>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-danger btn-sm">Sair</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        <h1 class="mb-4">Detalhes do Serviço</h1>
+        
+        <div class="card shadow-sm">
+            <div class="card-header text-center">
+                <h2 class="card-title">Título do Serviço</h2>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Descrição</h5>
+                <p class="card-text">Esta é uma descrição detalhada do serviço. Aqui você pode explicar como o serviço é realizado, quais são os benefícios e o que os clientes podem esperar.</p>
+                
+                <h5 class="card-title">Valor</h5>
+                <p class="card-text">R$ 150,00</p>
+                
+                <h5 class="card-title">Prazo</h5>
+                <p class="card-text">3 dias</p>
+            </div>
+            <div class="card-footer text-center">
+                <a href="editar_servico.html" class="btn btn-warning">Editar Serviço</a>
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removerServicoModal">Remover Serviço</button>
+            </div>
+        </div>
+
+        <!-- Modal de Remoção de Serviço -->
+        <div class="modal fade" id="removerServicoModal" tabindex="-1" aria-labelledby="removerServicoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="removerServicoModalLabel">Remover Serviço</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Tem certeza de que deseja remover este serviço? Esta ação não pode ser desfeita.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger">Remover</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
