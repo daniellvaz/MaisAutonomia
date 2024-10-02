@@ -13,15 +13,25 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 require __DIR__ . "/../vendor/autoload.php";
 
+session_start();
+
+$_SESSION["user"] = [
+  "id" => 1,
+  "name" => "Daniel Murilo Vaz",
+  "photo" => "https:github.com/daniellvaz.png"
+];
+
+// session_destroy();
+
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
+$twig = Twig::create(__DIR__ . '/../resources/views', ['cache' => false]);
 
 $app = AppFactory::create();
 $app->setBasePath($_ENV['BASE_PATH']);
 
-$twig = Twig::create(__DIR__ . '/../resources/views', ['cache' => false]);
-$app->add(TwigMiddleware::create($app, $twig));
 
+$app->add(TwigMiddleware::create($app, $twig));
 // Middleware para servir arquivos estáticos da pasta resources/assets
 $app->get('/assets/{file:.+}', function (Request $request, Response $response, array $args) {
   $filePath = __DIR__ . '/../resources/assets/' . $args['file'];

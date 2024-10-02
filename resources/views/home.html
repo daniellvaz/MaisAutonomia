@@ -1,156 +1,131 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .navbar-text {
-            margin-right: 15px; /* Espaçamento entre o nome do usuário e o select */
-        }
+{% extends 'templates/layout.html' %}
 
-        .divider {
-            width: 2px;
-            height: 40px;
-            background-color: #e4e4e7;
-        }
-    </style>
-    <title>Meus Serviços - Autônomo</title>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url() }}">
-                <img class="logo" src="{{ url('/assets/images/logo.svg') }}" alt="Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav d-flex gap-3 align-items-center">
-                    <li class="nav-item">
-                        <div class="d-flex">
-                            <span class="navbar-text">Daniel Murilo Vaz</span>
-                            <img src="https://github.com/daniellvaz.png" alt="Avatar" class="rounded-circle" width="40" height="40">
+{% block title %}Mais Autonomia | Início{% endblock title %}
+
+{% block head %}
+<style>
+    .navbar-text {
+        margin-right: 15px; /* Espaçamento entre o nome do usuário e o select */
+    }
+
+    .divider {
+        width: 2px;
+        height: 40px;
+        background-color: #e4e4e7;
+    }
+</style>
+{% endblock head %}
+
+{% block content %}    
+<!-- Navbar -->
+{% include 'components/header.html' %}
+
+<main class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-4 fw-bold">Meus Serviços</h3>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cadastroServicoModal">
+            Adicionar Novo Serviço
+        </button>
+    </div>
+
+    <div class="row" id="services">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    <strong class="card-title">Serviço 1</strong>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Descrição do serviço 1. Oferecemos soluções personalizadas para
+                        atender suas necessidades.
+                    </p>
+                    <p><strong>Valor:</strong> R$ 100,00</p>
+                    <p><strong>Prazo:</strong> 5 dias</p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary">Ver Detalhes</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    <strong class="card-title">Serviço 2</strong>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Descrição do serviço 2. Proporcionamos a melhor experiência para
+                        nossos clientes.
+                    </p>
+                    <p><strong>Valor:</strong> R$ 150,00</p>
+                    <p><strong>Prazo:</strong> 3 dias</p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary">Ver Detalhes</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    <strong class="card-title">Serviço 3</strong>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Descrição do serviço 3. Garantimos qualidade e eficiência em nossos
+                        serviços.
+                    </p>
+                    <p><strong>Valor:</strong> R$ 200,00</p>
+                    <p><strong>Prazo:</strong> 7 dias</p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary">Ver Detalhes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro de Serviço -->
+    <div class="modal fade" id="cadastroServicoModal" tabindex="-1" aria-labelledby="cadastroServicoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cadastroServicoModalLabel">
+                        Cadastro de Serviço
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="cadastroServicoForm">
+                        <div class="mb-3">
+                            <label for="tituloServico" class="form-label">Título do Serviço</label>
+                            <input type="text" class="form-control" id="tituloServico" required />
                         </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="d-flex gap-2">
-                            <select class="form-select" aria-label="Perfil">
-                                <option selected>Autônomo</option>
-                                <option>Cliente</option>
-                            </select>
-                            <div class="divider"></div>
-                            <button class="btn btn-danger btn-sm px-4">Sair</button>
+                        <div class="mb-3">
+                            <label for="descricaoServico" class="form-label">Descrição do Serviço</label>
+                            <textarea class="form-control" id="descricaoServico" rows="3" required></textarea>
                         </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <main class="container my-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="mb-4 fw-bold">Meus Serviços</h3>
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cadastroServicoModal">
-                Adicionar Novo Serviço
-            </button>
-        </div>
-
-        <div class="row" id="services">
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header">
-                        <strong class="card-title">Serviço 1</strong>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">Descrição do serviço 1. Oferecemos soluções personalizadas para atender suas necessidades.</p>
-                        <p><strong>Valor:</strong> R$ 100,00</p>
-                        <p><strong>Prazo:</strong> 5 dias</p>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-primary">Ver Detalhes</button>
-                    </div>
+                        <div class="mb-3">
+                            <label for="valorServico" class="form-label">Valor</label>
+                            <input type="number" class="form-control" id="valorServico" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="prazoServico" class="form-label">Prazo (dias)</label>
+                            <input type="number" class="form-control" id="prazoServico" required />
+                        </div>
+                    </form>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header">
-                        <strong class="card-title">Serviço 2</strong>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">Descrição do serviço 2. Proporcionamos a melhor experiência para nossos clientes.</p>
-                        <p><strong>Valor:</strong> R$ 150,00</p>
-                        <p><strong>Prazo:</strong> 3 dias</p>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-primary">Ver Detalhes</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header">
-                        <strong class="card-title">Serviço 3</strong>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">Descrição do serviço 3. Garantimos qualidade e eficiência em nossos serviços.</p>
-                        <p><strong>Valor:</strong> R$ 200,00</p>
-                        <p><strong>Prazo:</strong> 7 dias</p>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn btn-primary">Ver Detalhes</button>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Fechar
+                    </button>
+                    <button type="submit" class="btn btn-primary" form="cadastroServicoForm">
+                        Cadastrar Serviço
+                    </button>
                 </div>
             </div>
         </div>
-
-        <!-- Modal de Cadastro de Serviço -->
-        <div class="modal fade" id="cadastroServicoModal" tabindex="-1" aria-labelledby="cadastroServicoModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="cadastroServicoModalLabel">Cadastro de Serviço</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="cadastroServicoForm">
-                            <div class="mb-3">
-                                <label for="tituloServico" class="form-label">Título do Serviço</label>
-                                <input type="text" class="form-control" id="tituloServico" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="descricaoServico" class="form-label">Descrição do Serviço</label>
-                                <textarea class="form-control" id="descricaoServico" rows="3" required></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="valorServico" class="form-label">Valor</label>
-                                <input type="number" class="form-control" id="valorServico" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="prazoServico" class="form-label">Prazo (dias)</label>
-                                <input type="number" class="form-control" id="prazoServico" required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary" form="cadastroServicoForm">Cadastrar Serviço</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-light py-4">
-        <div class="container text-center">
-            <p class="mb-0">&copy; 2024 Mais Autonomia. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
-     <!-- Scripts do Bootstrap -->
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    </div>
+</main>
+{% endblock content %}

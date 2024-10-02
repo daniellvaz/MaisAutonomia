@@ -1,0 +1,58 @@
+{% block navbar %}
+{% if user %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url() }}">
+            <img class="logo" src="{{ url('/assets/images/logo.svg') }}" alt="Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav d-flex gap-3 align-items-center">
+                <li class="nav-item">
+                    <div class="d-flex gap-2">
+                        <span class="navbar-text">{{ user.name }}</span>
+                        <img src="{{ user.photo }}" alt="Avatar" class="rounded-circle" width="40"
+                            height="40">
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="d-flex gap-2">
+                        <select class="form-select" aria-label="Perfil">
+                            <option selected>Autônomo</option>
+                            <option>Cliente</option>
+                        </select>
+                        <div class="divider"></div>
+                        <button class="btn btn-danger btn-sm px-4">Sair</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% else %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url() }}">
+            <img class="logo" src="{{ url('/assets/images/logo.svg') }}" alt="Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav d-flex gap-3 align-items-center">
+                <li class="nav-item">
+                    <a class="btn-link" href="{{ url('/login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary text-white" href="{{  url('/cadastro') }}">Cadastre-se</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endif %}
+{% endblock navbar %}
