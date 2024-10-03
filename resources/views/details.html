@@ -1,0 +1,97 @@
+{% extends 'templates/layout.html' %}
+
+{% block title %}Mais Autonomia | Serviço 1{% endblock title %}
+
+{% block content %}
+{% include 'components/header.html' %}
+<main class="container my-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Detalhes do Pedido</h2>
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <strong class="fs-5">Pedido #12345</strong>
+                    {% if profile == 'cliente' %}
+                    <button class="btn btn-outline-primary float-end" data-bs-toggle="modal" data-bs-target="#atualizarPedidoModal">
+                        Atualizar Pedido
+                    </button>
+                    {% else %}
+                    <a href="{{ url('/me/chat/novo') }}" class="btn btn-outline-primary float-end">
+                        Falar com o cliente
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Serviço: Desenvolvimento de Website</h5>
+                
+                    <!-- Detalhes do Serviço -->
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Detalhes do Serviço</h6>
+                        <p class="mb-1"><strong>Descrição:</strong> Criação de um website institucional responsivo para uma pequena empresa.</p>
+                        <p class="mb-1"><strong>Valor:</strong> R$ 3.000,00</p>
+                        <p class="mb-1"><strong>Prazo de Entrega:</strong> 30 dias</p>
+                        <p class="mb-1"><strong>Status:</strong> Em Andamento</p>
+                    </div>
+                    <hr>
+                
+                    {% if profile == 'cliente' %}
+                    <!-- Informações do Autônomo -->
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Informações do Autônomo</h6>
+                        <p class="mb-1"><strong>Nome:</strong> Maria de Souza</p>
+                        <p class="mb-1"><strong>Telefone:</strong> (00) 9876-5432</p>
+                        <p class="mb-1"><strong>E-mail:</strong> maria@email.com</p>
+                    </div>
+                    {% else %}
+                    <!-- Informações do Cliente -->
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Informações do Cliente</h6>
+                        <p class="mb-1"><strong>Nome:</strong> João da Silva</p>
+                        <p class="mb-1"><strong>Telefone:</strong> (00) 1234-5678</p>
+                        <p class="mb-1"><strong>E-mail:</strong> joao@email.com</p>
+                    </div>
+                    {% endif %}
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Modal para Atualizar Pedido -->
+<div class="modal fade" id="atualizarPedidoModal" tabindex="-1" aria-labelledby="atualizarPedidoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="atualizarPedidoModalLabel">Atualizar Pedido</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="statusPedido" class="form-label">Status do Pedido</label>
+                        <select class="form-select" id="statusPedido">
+                            <option selected>Em Andamento</option>
+                            <option>Concluído</option>
+                            <option>Cancelado</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="prazoEntrega" class="form-label">Prazo de Entrega</label>
+                        <input type="date" class="form-control" id="prazoEntrega" value="2024-12-31">
+                    </div>
+                    <div class="mb-3">
+                        <label for="valorServico" class="form-label">Valor do Serviço (R$)</label>
+                        <input type="text" class="form-control" id="valorServico" value="3000.00">
+                    </div>
+                    <div class="mb-3">
+                        <label for="descricaoAtualizacao" class="form-label">Descrição do Serviço</label>
+                        <textarea class="form-control" id="descricaoAtualizacao" rows="3">Criação de um website institucional responsivo para uma pequena empresa.</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Atualizar Pedido</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

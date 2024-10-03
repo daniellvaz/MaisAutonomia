@@ -1,0 +1,74 @@
+{% block head %}
+<style>
+    .divider {
+        width: 100%;
+        height: 2px;
+        background: #e4e4e7;
+    }
+</style>
+{% endblock head %}
+
+{% block navbar %}
+{% if user %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url() }}">
+            <img class="logo" src="{{ url('/assets/images/logo.svg') }}" alt="Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav d-flex gap-3 align-items-center">
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <div class="d-flex gap-2 align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="d-flex flex-column align-items-end">
+                                <strong class="navbar-text lh-1">{{ user.name }}</strong>
+                                <a href="{{ url('/me/perfil') }}" class="fs-6 lh-1">Ver perfil</a>
+                            </div>
+                            <img src="{{ user.photo }}" alt="Avatar" class="rounded-circle" width="48" height="48">
+                        </div>
+
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url('/me/inicio') }}">Início</a></li>
+                            <li><a class="dropdown-item" href="{{ url('/me/perfil') }}">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{% if profile == 'autonomo' %} {{ url('/me/inicio?profile=cliente') }} {% else %} {{ url('/me/inicio?profile=autonomo') }} {% endif %}">Trocar de Perfil</a></li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                            </li>
+                            <li class="dropdown-item">
+                                <a href="{{ url('/logout') }}" class="w-100 btn btn-danger btn-sm px-4">Sair</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% else %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url() }}">
+            <img class="logo" src="{{ url('/assets/images/logo.svg') }}" alt="Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav d-flex gap-3 align-items-center">
+                <li class="nav-item">
+                    <a class="btn-link" href="{{ url('/login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary text-white" href="{{  url('/cadastro') }}">Cadastre-se</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endif %}
+{% endblock navbar %}

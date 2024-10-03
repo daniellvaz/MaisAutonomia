@@ -1,0 +1,133 @@
+{% extends 'templates/layout.html' %}
+
+{% block title %}Mais Autonomia | Início{% endblock title %}
+
+{% block head %}
+<style>
+    .navbar-text {
+        margin-right: 15px; /* Espaçamento entre o nome do usuário e o select */
+    }
+
+    .divider {
+        width: 2px;
+        height: 40px;
+        background-color: #e4e4e7;
+    }
+</style>
+{% endblock head %}
+
+{% block content %}    
+<!-- Navbar -->
+{% include 'components/header.html' %}
+
+<main class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-4 fw-bold">Meus Serviços</h3>
+        {% if profile == 'cliente' %}
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cadastroServicoModal">
+            Adicionar Novo Serviço
+        </button>
+        {% endif %}
+    </div>
+
+    <div class="row" id="services">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    <strong class="card-title">Serviço 1</strong>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Descrição do serviço 1. Oferecemos soluções personalizadas para
+                        atender suas necessidades.
+                    </p>
+                    <p><strong>Valor:</strong> R$ 100,00</p>
+                    <p><strong>Prazo:</strong> 5 dias</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url('/me/servicos/1') }}" class="btn btn-primary">Ver Detalhes</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    <strong class="card-title">Serviço 2</strong>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Descrição do serviço 2. Proporcionamos a melhor experiência para
+                        nossos clientes.
+                    </p>
+                    <p><strong>Valor:</strong> R$ 150,00</p>
+                    <p><strong>Prazo:</strong> 3 dias</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url('/me/servicos/1') }}" class="btn btn-primary">Ver Detalhes</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header">
+                    <strong class="card-title">Serviço 3</strong>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Descrição do serviço 3. Garantimos qualidade e eficiência em nossos
+                        serviços.
+                    </p>
+                    <p><strong>Valor:</strong> R$ 200,00</p>
+                    <p><strong>Prazo:</strong> 7 dias</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url('/me/servicos/1') }}" class="btn btn-primary">Ver Detalhes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro de Serviço -->
+    <div class="modal fade" id="cadastroServicoModal" tabindex="-1" aria-labelledby="cadastroServicoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cadastroServicoModalLabel">
+                        Cadastro de Serviço
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="cadastroServicoForm">
+                        <div class="mb-3">
+                            <label for="tituloServico" class="form-label">Título do Serviço</label>
+                            <input type="text" class="form-control" id="tituloServico" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="descricaoServico" class="form-label">Descrição do Serviço</label>
+                            <textarea class="form-control" id="descricaoServico" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="valorServico" class="form-label">Valor</label>
+                            <input type="number" class="form-control" id="valorServico" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="prazoServico" class="form-label">Prazo (dias)</label>
+                            <input type="number" class="form-control" id="prazoServico" required />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Fechar
+                    </button>
+                    <button type="submit" class="btn btn-primary" form="cadastroServicoForm">
+                        Cadastrar Serviço
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}
