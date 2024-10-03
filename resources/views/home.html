@@ -23,9 +23,11 @@
 <main class="container my-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="mb-4 fw-bold">Meus Serviços</h3>
+        {% if profile == 'cliente' %}
         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cadastroServicoModal">
             Adicionar Novo Serviço
         </button>
+        {% endif %}
     </div>
 
     <div class="row" id="services">
@@ -43,7 +45,7 @@
                     <p><strong>Prazo:</strong> 5 dias</p>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-primary">Ver Detalhes</button>
+                    <a href="{{ url('/me/servicos/1') }}" class="btn btn-primary">Ver Detalhes</a>
                 </div>
             </div>
         </div>
@@ -61,7 +63,7 @@
                     <p><strong>Prazo:</strong> 3 dias</p>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-primary">Ver Detalhes</button>
+                    <a href="{{ url('/me/servicos/1') }}" class="btn btn-primary">Ver Detalhes</a>
                 </div>
             </div>
         </div>
@@ -79,7 +81,7 @@
                     <p><strong>Prazo:</strong> 7 dias</p>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-primary">Ver Detalhes</button>
+                    <a href="{{ url('/me/servicos/1') }}" class="btn btn-primary">Ver Detalhes</a>
                 </div>
             </div>
         </div>

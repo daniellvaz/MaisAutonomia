@@ -1,0 +1,86 @@
+{% extends 'templates/layout.html' %}
+
+{% block title %}Mais Autonomia | Mensagens{% endblock title %}
+{% block content %}
+{% include 'components/header.html' %}
+<div class="container vh-100 mt-5">
+    <div class="row">
+        <!-- Lista de Contatos -->
+        <div class="col-md-4">
+            <div class="list-group">
+                <a href="{{ url('/me/menssagens?message=1') }}"
+                    class="list-group-item list-group-item-action {% if message == '1' %}active{% endif %}">
+                    João da Silva
+                </a>
+                <a href="{{ url('/me/menssagens?message=2') }}"
+                    class="list-group-item list-group-item-action {% if message == '2' %}active{% endif %}">Ana
+                    Pereira</a>
+                <a href="{{ url('/me/menssagens?message=3') }}"
+                    class="list-group-item list-group-item-action {% if message == '3' %}active{% endif %}">Carlos
+                    Oliveira</a>
+                <a href="{{ url('/me/menssagens?message=4') }}"
+                    class="list-group-item list-group-item-action {% if message == '4' %}active{% endif %}">Fernanda
+                    Lima</a>
+            </div>
+        </div>
+
+        {% if message %}
+        <!-- Conteúdo da Mensagem -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title">João da Silva</h5>
+                        <a href="#" class="card-link">Ver detalhes do serviço</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Conversa -->
+                    <div class="mb-3">
+                        <div class="d-flex align-items-start mb-2">
+                            <strong>Você:</strong>
+                            <p class="ms-2">Olá, João. O site já está quase pronto, só faltam alguns detalhes.</p>
+                        </div>
+                        <div class="d-flex align-items-start mb-2">
+                            <strong>João:</strong>
+                            <p class="ms-2">Ótimo! Pode me enviar uma prévia?</p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Enviar Nova Mensagem -->
+                    <form>
+                        <div class="mb-3">
+                            <label for="mensagem" class="form-label">Nova Mensagem</label>
+                            <textarea class="form-control" id="mensagem" rows="3"
+                                placeholder="Digite sua mensagem..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- Conteúdo da Mensagem -->
+        <div class="col-md-8">
+            <div class="card">
+                <!-- Verifica se há mensagem selecionada -->
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title">Nenhuma mensagem selecionada</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Exibe texto quando nenhuma mensagem estiver selecionada -->
+                    <div class="text-center">
+                        <p class="text-muted">Selecione uma conversa à esquerda para visualizar as mensagens.</p>
+                        <a class="btn btn-primary" href="{{ url('/') }}">Buscar serviços</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

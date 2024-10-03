@@ -1,11 +1,11 @@
 {% block head %}
-    <style>
-        .divider {
-            width: 2px;
-            height: 42px;
-            background: #e4e4e7;
-        }
-    </style>
+<style>
+    .divider {
+        width: 100%;
+        height: 2px;
+        background: #e4e4e7;
+    }
+</style>
 {% endblock head %}
 
 {% block navbar %}
@@ -22,20 +22,26 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav d-flex gap-3 align-items-center">
                 <li class="nav-item">
-                    <div class="d-flex gap-2">
-                        <span class="navbar-text">{{ user.name }}</span>
-                        <img src="{{ user.photo }}" alt="Avatar" class="rounded-circle" width="40"
-                            height="40">
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="d-flex gap-2">
-                        <select class="form-select" aria-label="Perfil">
-                            <option selected>Autônomo</option>
-                            <option>Cliente</option>
-                        </select>
-                        <div class="divider"></div>
-                        <button class="btn btn-danger btn-sm px-4">Sair</button>
+                    <div class="dropdown">
+                        <div class="d-flex gap-2 align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="d-flex flex-column align-items-end">
+                                <strong class="navbar-text lh-1">{{ user.name }}</strong>
+                                <a href="{{ url('/me/perfil') }}" class="fs-6 lh-1">Ver perfil</a>
+                            </div>
+                            <img src="{{ user.photo }}" alt="Avatar" class="rounded-circle" width="48" height="48">
+                        </div>
+
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url('/me/inicio') }}">Início</a></li>
+                            <li><a class="dropdown-item" href="{{ url('/me/perfil') }}">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{% if profile == 'autonomo' %} {{ url('/me/inicio?profile=cliente') }} {% else %} {{ url('/me/inicio?profile=autonomo') }} {% endif %}">Trocar de Perfil</a></li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                            </li>
+                            <li class="dropdown-item">
+                                <a href="{{ url('/logout') }}" class="w-100 btn btn-danger btn-sm px-4">Sair</a>
+                            </li>
+                        </ul>
                     </div>
                 </li>
             </ul>
