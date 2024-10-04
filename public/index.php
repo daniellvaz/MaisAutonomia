@@ -17,8 +17,8 @@ session_start();
 
 $_SESSION["user"] = [
   "id" => 1,
-  "name" => "Daniel Murilo Vaz",
-  "photo" => "https:github.com/daniellvaz.png"
+  "name" => "Fulano de Tal",
+  "photo" => "https:github.com/shadcnui.png"
 ];
 
 // session_destroy();
