@@ -17,14 +17,14 @@ session_start();
 
 $_SESSION["user"] = [
   "id" => 1,
-  "name" => "Daniel Murilo Vaz",
-  "photo" => "https:github.com/daniellvaz.png"
+  "name" => "Fulano de Tal",
+  "photo" => "https:github.com/shadcn-ui.png"
 ];
 
 // session_destroy();
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
+$dotenv->safeLoad();
 $twig = Twig::create(__DIR__ . '/../resources/views', ['cache' => false]);
 
 $app = AppFactory::create();
