@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 03/10/2024 às 20:37
+-- Tempo de geração: 06/10/2024 às 21:05
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `maisautonomia`
+-- Banco de dados: `mais_autonomia`
 --
 
 -- --------------------------------------------------------
@@ -84,10 +84,11 @@ CREATE TABLE `servicos` (
   `id_servicos` int(5) NOT NULL,
   `titulo_servicos` varchar(30) NOT NULL,
   `desc_servicos` varchar(130) NOT NULL,
-  `valor_servicos` int(7) NOT NULL,
+  `valor_servicos` float NOT NULL,
   `prazo_servicos` datetime NOT NULL,
   `id_cliente` int(5) NOT NULL,
-  `id_autonomo` int(5) NOT NULL
+  `id_autonomo` int(5) NOT NULL,
+  `status_servicos` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -101,9 +102,9 @@ CREATE TABLE `usuario` (
   `nome_user` varchar(100) NOT NULL,
   `email_user` varchar(70) NOT NULL,
   `senha_user` varchar(30) NOT NULL,
-  `telefone_user` int(15) NOT NULL,
+  `telefone_user` varchar(15) NOT NULL,
   `cpf_cnpj` varchar(18) NOT NULL,
-  `cep_user` int(8) NOT NULL,
+  `cep_user` varchar(8) NOT NULL,
   `avatar_user` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -155,7 +156,9 @@ ALTER TABLE `perfil`
 -- Índices de tabela `servicos`
 --
 ALTER TABLE `servicos`
-  ADD PRIMARY KEY (`id_servicos`);
+  ADD PRIMARY KEY (`id_servicos`),
+  ADD KEY `id_autonomo` (`id_autonomo`),
+  ADD KEY `id_cliente` (`id_cliente`);
 
 --
 -- Índices de tabela `usuario`
@@ -241,6 +244,13 @@ ALTER TABLE `avaliacao`
 --
 ALTER TABLE `formacao_experiencia`
   ADD CONSTRAINT `formacao_experiencia_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `usuario` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Restrições para tabelas `servicos`
+--
+ALTER TABLE `servicos`
+  ADD CONSTRAINT `servicos_ibfk_1` FOREIGN KEY (`id_autonomo`) REFERENCES `usuario` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `servicos_ibfk_2` FOREIGN KEY (`id_cliente`) REFERENCES `usuario` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Restrições para tabelas `usuario_perfil`
