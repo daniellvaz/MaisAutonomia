@@ -1,20 +1,19 @@
 <?php include 'config.php'; ?>
+
 <?php
-function cadastroUser(){
     if (isset($_POST['enviar'])) {
         $nome = $_POST['nome'];
         $email = $_POST['email'];
         $senha = $_POST['senha'];
         $telefone = $_POST['telefone'];
-        $cpfcnpj = $_POST['cpfcnpj'];
+        $cpfcnpj = $_POST['cpf_cnpj'];
         $cep = $_POST['cep'];
-        $avatar = $_POST['avatar'];
 
         //Verificação se todos os campos foram preenchidos
-        if ($nome == "" || $email == "" || $senha == "" || $telefone == "" || $cpfcnpj == "" || $cep == "" || $avatar == "") {
+        if ($nome == "" || $email == "" || $senha == "" || $telefone == "" || $cpfcnpj == "" || $cep == "") {
             ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                Os campos <strong>nome</strong> e <strong>e-mail</strong> são obrigatórios!
+                 <strong>Todos</strong> os campos são obrigatórios!
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>  
             <?php  
@@ -44,18 +43,17 @@ function cadastroUser(){
                 $senha_segura = password_hash($senha, PASSWORD_DEFAULT);
 
                 // Grava os dados no banco
-                $gravar = $conn->prepare("INSERT INTO `usuario` (`id_user`, `nome_user`, `email_user`, `senha_user`, `telefone_user`, `cpf_cnpj`, `cep_user`, `avatar_user`)
-                                          VALUES (NULL, :nome, :email, :senha, :telefone, :cpf_cnpj, :cep, :avatar);");
+                $gravar = $conn->prepare("INSERT INTO `usuario` (`id_user`, `nome_user`, `email_user`, `senha_user`, `telefone_user`, `cpf_cnpj`, `cep_user`)
+                                          VALUES (NULL, :nome, :email, :senha, :telefone, :cpf_cnpj, :cep);");
                 $gravar->bindValue(":nome", $nome);
                 $gravar->bindValue(":email", $email);
                 $gravar->bindValue(":senha", $senha_segura); // Senha criptografada
                 $gravar->bindValue(":telefone", $telefone);
                 $gravar->bindValue(":cpf_cnpj", $cpfcnpj);
                 $gravar->bindValue(":cep", $cep);
-                $gravar->bindValue(":avatar", $avatar);
                 $gravar->execute();
             }
         }
     }
-}
+
 ?>
