@@ -15,7 +15,11 @@ class WebController extends Controller
 
   public function login(Request $request, Response $response)
   {
-    return $this->view->render($response, 'login.html');
+    $error = isset($_GET['erro']) ? $_GET['erro'] : null;
+
+    return $this->view->render($response, 'login.html', [
+      "error" => $error
+    ]);
   }
 
   public function register(Request $request, Response $response)
