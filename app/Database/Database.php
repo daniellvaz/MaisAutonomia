@@ -11,10 +11,10 @@ class Database
 
   public function __construct()
   {
-    $this->connection = new PDO("mysql:host=localhost;dbname={$_ENV['DB_NAME']};charset=utf8mb4", $_ENV['DB_NAME'], $_ENV['DB_PASS']);
+    $this->connection = new PDO("mysql:host=127.0.0.1;dbname={$_ENV['DB_NAME']};charset=utf8mb4", 'root', '123456');
   }
 
-  public function query(string $query, array $params): PDO
+  public function query(): PDO
   {
     return $this->connection;
   }
