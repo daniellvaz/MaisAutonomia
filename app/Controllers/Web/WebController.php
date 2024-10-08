@@ -24,6 +24,10 @@ class WebController extends Controller
 
   public function register(Request $request, Response $response)
   {
-    return $this->view->render($response, 'register.html');
+    $erro = isset($_GET['erro']) ? $_GET['erro'] : null;
+
+    return $this->view->render($response, 'register.html', [
+      "erro" => $erro
+    ]);
   }
 }
