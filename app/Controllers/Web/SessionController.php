@@ -2,15 +2,14 @@
 
 namespace MaisAutonomia\Controllers\Web;
 
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use MaisAutonomia\Database\Database;
 use MaisAutonomia\Controllers\Controller;
-use Psr\Http\Message\RequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
-
 
 class SessionController extends Controller
 {
-  public function login(Request $request, Response $response): void
+  public function login(Request $request, Response $response): Response
   {
     $email = $_POST['email'];
     $senha = $_POST['senha'];
@@ -22,8 +21,9 @@ class SessionController extends Controller
     $usuario = $stmt->fetch();
 
     if (!$usuario || !password_verify($senha, $usuario['senha_user'])) {
-      header("Location: {$_ENV['BASE_URL']}/login?erro=Usuario%20ou%20nao%20conferem");
-      return;
+      return $response
+        ->withHeader("Location", $_ENV['BASE_URL'] . "/login?erro=Usuário%20ou%20senha%20não%20conferem!")
+        ->withStatus(301);
     }
 
     $_SESSION['user'] = $usuario;
@@ -32,6 +32,17 @@ class SessionController extends Controller
     // ...
 
     // Redireciona para a página inicial (pode ser uma página de dashboard)
-    header("Location: index.php?login=success");
+    return $response
+      ->withHeader("Location", $_ENV['BASE_URL'] . "/")
+      ->withStatus(301);
+  }
+
+  public function logout(Request $request, Response $response): response
+  {
+    session_destroy();
+
+    return $response
+      ->withHeader('Location', $_ENV['BASE_URL'] . "/")
+      ->withStatus(301);
   }
 }
