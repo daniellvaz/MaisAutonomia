@@ -14,6 +14,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 require __DIR__ . "/../vendor/autoload.php";
 
 session_start();
+session_destroy();
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->safeLoad();

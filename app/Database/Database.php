@@ -11,7 +11,7 @@ class Database
 
   public function __construct()
   {
-    $this->connection = new PDO("mysql:host=127.0.0.1;dbname={$_ENV['DB_NAME']};charset=utf8mb4", 'root', '123456');
+    $this->connection = new PDO("mysql:host=127.0.0.1;dbname={$_ENV['DB_NAME']};charset=utf8mb4", 'root', '');
   }
 
   public function query(): PDO
