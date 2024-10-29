@@ -34,7 +34,7 @@ class WebController extends Controller
   public function servicos(Request $request, Response $response)
   {
     $erro = isset($_GET['erro']) ? $_GET['erro'] : null;
-
+    
    if ($_SERVER["REQUEST_METHOD"] == "POST") {
        // Captura os dados do formulário
        $nomeCompleto = $_POST['nomeCompleto'];
