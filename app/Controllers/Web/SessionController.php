@@ -1,7 +1,5 @@
 <?php
-
 namespace MaisAutonomia\Controllers\Web;
-
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use MaisAutonomia\Database\Database;
