@@ -8,7 +8,7 @@ use MaisAutonomia\Controllers\Controller;
 
 class ServiceController extends Controller
 {
-  public function store(Request $request, Response $response): Response
+  public function store (Request $request, Response $response): Response
   {
     $conn = new Database();
 
@@ -31,7 +31,7 @@ class ServiceController extends Controller
         }
     }
 
-    $stmt = $conn->query()->prepare("INSERT INTO servicos (nome_completo, cpf, email, telefone, logradouro, uf, cidade, tipo_servico, imagem1, imagem2, imagem3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->query()->prepare("INSERT INTO servicos (titulo_servicos, desc_servicos, valor_servicos, prazo_servicos, imagem1, imagem2, imagem3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$nomeCompleto, $cpf, $email, $telefone, $logradouro, $uf, $cidade, $tipoServico, $imagens[0], $imagens[1], $imagens[2]]);
 
     echo '<div class="alert alert-success">Serviço cadastrado com sucesso!</div>'; // Mensagem de sucess
