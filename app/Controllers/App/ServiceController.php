@@ -1,5 +1,6 @@
 <?php
-namespace MaisAutonomia\Controllers\App\ServiceController;
+
+namespace MaisAutonomia\Controllers\App;
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -20,7 +21,6 @@ class ServiceController extends Controller
     $uploadsDir = "uploads/";
     $imagens = ["", "", ""]; 
 
-
     for ($i = 0; $i < 3; $i++) {
         if (!empty($_FILES["imagem"]["name"][$i])) {
             $imagemTmp = $_FILES["imagem"]["tmp_name"][$i];
@@ -31,9 +31,17 @@ class ServiceController extends Controller
         }
     }
 
-    $stmt = $conn->query()->prepare("INSERT INTO servicos (titulo_servicos, desc_servicos, valor_servicos, prazo_servicos, imagem1, imagem2, imagem3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$nomeCompleto, $cpf, $email, $telefone, $logradouro, $uf, $cidade, $tipoServico, $imagens[0], $imagens[1], $imagens[2]]);
+    $stmt = $conn->query()->prepare("
+      INSERT INTO servicos 
+      (titulo_servicos, desc_servicos, valor_servicos, prazo_servicos) 
+      VALUES 
+      (:titulo_servicos, :desc_servicos, :valor_servicos, :prazo_servicos)
+    ");
+    $stmt->execute([$titulo_servicos, $desc_servicos, $valor_servicos, $prazo_servicos]);
 
-    echo '<div class="alert alert-success">Serviço cadastrado com sucesso!</div>'; // Mensagem de sucess
+    // Redireciona para a página inicial (pode ser uma página de dashboard)
+    return $response
+      ->withHeader("Location", $_ENV['BASE_URL'] . "/me/inicio?mensagem=Serviço%20cadastrado%20com%20sucesso")
+      ->withStatus(301);
   }
 }
