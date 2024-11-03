@@ -7,18 +7,23 @@
 <main class="container my-5">
     <div class="row">
         <div class="col-md-12">
-            <h2>Detalhes do Pedido</h2>
+            <h2>Detalhes do serviço</h2>
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <strong class="fs-5">Pedido #{{ servico.id_servicos }}</strong>
-                    {% if profile == 'cliente' %}
-                    <button class="btn btn-outline-primary float-end" data-bs-toggle="modal" data-bs-target="#atualizarPedidoModal">
-                        Atualizar Pedido
-                    </button>
+                    <strong class="fs-5">Serviço #{{ servico.id_servicos }}</strong>
+                    {% if user and servico.id_cliente == user.id_usuario %}
+                       <div class="d-flex gap-2 align-items-center">
+                            <button class="btn btn-outline-primary float-end" data-bs-toggle="modal" data-bs-target="#atualizarPedidoModal">
+                                Atualizar o serviço
+                            </button>   
+                            <button class="btn btn-outline-danger float-end" data-bs-toggle="modal" data-bs-target="#deletaServicoModal">
+                                Deletar o serviço
+                            </button> 
+                       </div>  
                     {% else %}
-                    <a href="{{ url('/me/chat/novo') }}" class="btn btn-outline-primary float-end">
-                        Falar com o cliente
-                    </a>
+                        <a href="{{ url("/me/proposta/#{servico.id_servicos}") }}" class="btn btn-outline-primary float-end">
+                            Fazer uma proposta
+                        </a>
                     {% endif %}
                 </div>
                 <div class="card-body">
@@ -95,4 +100,39 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deletaServicoModal" tabindex="-1" aria-labelledby="deletaServicoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deletaServicoLabel">Deletar serviço</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Deseja realmente deletar o serviço {{ servico.id_servicos }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-danger" onclick="deletarServico()">Deletar</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
+
+{% block script %}
+    <script>
+        const deletarServico = async () => {
+            try {
+                const id = "{{ servico.id_servicos }}"
+                const response = await fetch(`{{ url("/me/servicos/deletar/") }}${id}`, {
+                    method: "DELETE"
+                });
+
+                window.location = response.url
+            } catch (error) {
+                
+            }
+        }
+    </script>
+{% endblock script %}

@@ -84,4 +84,19 @@ class ServiceController extends Controller
       ->withHeader("Location", $_ENV['BASE_URL'] . "/me/servicos/{$id}?message=Serviço%20atualizado%20com%20sucesso")
       ->withStatus(301);
   }
+
+  public function delete(Request $request, Response $response): Response
+  {
+    $id    = $request->getAttribute('id');
+    $query = "DELETE FROM servicos s WHERE s.id_servicos = :id";
+    $stmt  = (new Database())->query()->prepare($query);
+
+    $stmt->execute([
+      'id' => $id
+    ]);
+
+    return $response
+      ->withHeader("Location", $_ENV['BASE_URL'] . "/me/inicio?message=Serviço%20deletado%20com%20sucesso")
+      ->withStatus(301);
+  }
 }

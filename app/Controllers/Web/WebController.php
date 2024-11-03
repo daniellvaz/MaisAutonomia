@@ -18,7 +18,19 @@ class WebController extends Controller
     ]);
     $servicos = $smtm->fetchAll();
 
-    return $this->view->render($response, 'index.html', [
+    return $this->view->render($response, 'index.html');
+  }
+
+  public function jobs(Request $request, Response $response): Response
+  {
+    $query = "SELECT * FROM servicos s WHERE s.titulo_servicos LIKE :titulo";
+    $smtm = (new Database())->query()->prepare($query);
+    $smtm->execute([
+      "titulo" => $_GET['titulo'] ?? '%%'
+    ]);
+    $servicos = $smtm->fetchAll();
+
+    return $this->view->render($response, 'jobs.html', [
       "servicos" => $servicos,
     ]);
   }

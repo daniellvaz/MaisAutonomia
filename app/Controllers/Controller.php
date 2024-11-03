@@ -12,6 +12,7 @@ class Controller
    * @var \Slim\Views\Twig $view
    */
   public $view = null;
+  public $message = null;
 
   /**
    * Class constructor.
@@ -27,5 +28,14 @@ class Controller
 
       return $_ENV['BASE_URL'];
     }));
+
+    if (isset($_GET['message'])) {
+      $this->message = [
+        "value" => $_GET['message'],
+        "type" => $_GET['type'] ?? "success",
+      ];
+
+      $this->view->offsetSet('message', $this->message);
+    }
   }
 }
