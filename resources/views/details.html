@@ -10,7 +10,7 @@
             <h2>Detalhes do Pedido</h2>
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <strong class="fs-5">Pedido #12345</strong>
+                    <strong class="fs-5">Pedido #{{ servico.id_servicos }}</strong>
                     {% if profile == 'cliente' %}
                     <button class="btn btn-outline-primary float-end" data-bs-toggle="modal" data-bs-target="#atualizarPedidoModal">
                         Atualizar Pedido
@@ -22,19 +22,19 @@
                     {% endif %}
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Serviço: Desenvolvimento de Website</h5>
+                    <h5 class="card-title">Serviço: {{ servico.titulo_servicos }}</h5>
                 
                     <!-- Detalhes do Serviço -->
                     <div class="mb-3">
                         <h6 class="fw-bold">Detalhes do Serviço</h6>
-                        <p class="mb-1"><strong>Descrição:</strong> Criação de um website institucional responsivo para uma pequena empresa.</p>
-                        <p class="mb-1"><strong>Valor:</strong> R$ 3.000,00</p>
-                        <p class="mb-1"><strong>Prazo de Entrega:</strong> 30 dias</p>
-                        <p class="mb-1"><strong>Status:</strong> Em Andamento</p>
+                        <p class="mb-1"><strong>Descrição:</strong> {{ servico.desc_servicos }}</p>
+                        <p class="mb-1"><strong>Valor:</strong> R$ {{ servico.valor_servicos }}</p>
+                        <p class="mb-1"><strong>Prazo de Entrega:</strong> {{ servico.prazo_servicos|date('d/m/Y') }}</p>
+                        <p class="mb-1"><strong>Status:</strong> {{ servico.status_servicos }}</p>
                     </div>
                     <hr>
                 
-                    {% if profile == 'cliente' %}
+                    {% if servico.id_autonomo == 'cliente' %}
                     <!-- Informações do Autônomo -->
                     <div class="mb-3">
                         <h6 class="fw-bold">Informações do Autônomo</h6>
@@ -43,12 +43,8 @@
                         <p class="mb-1"><strong>E-mail:</strong> maria@email.com</p>
                     </div>
                     {% else %}
-                    <!-- Informações do Cliente -->
                     <div class="mb-3">
-                        <h6 class="fw-bold">Informações do Cliente</h6>
-                        <p class="mb-1"><strong>Nome:</strong> João da Silva</p>
-                        <p class="mb-1"><strong>Telefone:</strong> (00) 1234-5678</p>
-                        <p class="mb-1"><strong>E-mail:</strong> joao@email.com</p>
+                        <p class="mb-1">Aguardando propostas</p>
                     </div>
                     {% endif %}
                 </div>
@@ -67,26 +63,31 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form method="post" action="{{url("/me/servicos/atualiza/#{servico.id_servicos}")}}">
                     <div class="mb-3">
-                        <label for="statusPedido" class="form-label">Status do Pedido</label>
-                        <select class="form-select" id="statusPedido">
-                            <option selected>Em Andamento</option>
+                        <label for="titulo_servicos" class="form-label">Titulo do Serviço</label>
+                        <input class="form-control" id="titulo_servicos" name="titulo_servicos" value="{{servico.titulo_servicos}}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="desc_servicos" class="form-label">Descrição do Serviço</label>
+                        <textarea class="form-control" id="desc_servicos" name="desc_servicos" rows="3">{{servico.desc_servicos}}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="status_servicos" class="form-label">Status do Pedido</label>
+                        <select class="form-select" id="status_servicos" name="status_servicos">
+                            <option selected>{{ servico.status_servicos }}</option>
+                            <option>Em Andamento</option>
                             <option>Concluído</option>
                             <option>Cancelado</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="prazoEntrega" class="form-label">Prazo de Entrega</label>
-                        <input type="date" class="form-control" id="prazoEntrega" value="2024-12-31">
+                        <label for="prazo_servicos" class="form-label">Prazo de Entrega</label>
+                        <input type="date" class="form-control" id="prazo_servicos" name="prazo_servicos" value="{{ servico.prazo_servicos|date('Y-m-d') }}">
                     </div>
                     <div class="mb-3">
-                        <label for="valorServico" class="form-label">Valor do Serviço (R$)</label>
-                        <input type="text" class="form-control" id="valorServico" value="3000.00">
-                    </div>
-                    <div class="mb-3">
-                        <label for="descricaoAtualizacao" class="form-label">Descrição do Serviço</label>
-                        <textarea class="form-control" id="descricaoAtualizacao" rows="3">Criação de um website institucional responsivo para uma pequena empresa.</textarea>
+                        <label for="valor_servicos" class="form-label">Valor do Serviço (R$)</label>
+                        <input type="text" class="form-control" id="valor_servicos" name="valor_servicos" value="{{ servico.valor_servicos }}">
                     </div>
                     <button type="submit" class="btn btn-primary">Atualizar Pedido</button>
                 </form>

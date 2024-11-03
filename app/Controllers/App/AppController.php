@@ -12,19 +12,31 @@ class AppController extends Controller
 {
   public function home(Request $request, Response $response)
   {
-    $queries = $request->getQueryParams();
+    $database = new Database();
+    $stmt = $database->query()->prepare("SELECT * FROM servicos s WHERE s.id_cliente = :usuario");
+    $stmt->execute([
+      "usuario" => $_SESSION['user']['id_usuario']
+    ]);
+    $servicos = $stmt->fetchAll();
 
     return $this->view->render($response, 'home.html', [
-      "profile" => isset($queries['profile']) ? $queries['profile'] : 'cliente'
+      "servicos" => $servicos,
     ]);
   }
 
   public function details(Request $request, Response $response)
   {
-    $queries = $request->getQueryParams();
+    $id = $request->getAttribute('id');
+    $database = new Database();
+    $stmt = $database->query()->prepare("SELECT * FROM servicos s WHERE s.id_servicos = :id");
+    $stmt->execute([
+      "id" => $id
+    ]);
+    $servico = $stmt->fetchAll();
 
     return $this->view->render($response, 'details.html', [
-      "profile" => isset($queries['profile']) ? $queries['profile'] : 'cliente'
+      "servico" => $servico[0],
+      "profile" => "cliente"
     ]);
   }
 
