@@ -3,6 +3,7 @@
 namespace MaisAutonomia\Controllers\Web;
 
 use MaisAutonomia\Controllers\Controller;
+use MaisAutonomia\Database\Database;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
@@ -10,7 +11,16 @@ class WebController extends Controller
 {
   public function home(Request $request, Response $response)
   {
-    return $this->view->render($response, 'index.html');
+    $query = "SELECT * FROM servicos s WHERE s.titulo_servicos LIKE :titulo";
+    $smtm = (new Database())->query()->prepare($query);
+    $smtm->execute([
+      "titulo" => $_GET['titulo'] ?? '%%'
+    ]);
+    $servicos = $smtm->fetchAll();
+
+    return $this->view->render($response, 'index.html', [
+      "servicos" => $servicos,
+    ]);
   }
 
   public function login(Request $request, Response $response)

@@ -165,7 +165,7 @@
 
             <form class="row g-3">
                 <div class="col-md-4">
-                    <input type="text" class="form-control" placeholder="Buscar por serviço" id="searchService">
+                    <input type="text" name="titulo" class="form-control" placeholder="Buscar por serviço" id="searchService">
                 </div>
                 <div class="col-md-3">
                     <select class="form-select" id="filterCategory">
@@ -190,42 +190,19 @@
             </form>
         </div>
         <div class="row">
-            <!-- Card de Serviço 1 -->
-            <div class="col-md-4">
-                <div class="card service-card mb-4">
-                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Serviço 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Desenvolvimento de Sites</h5>
-                        <p class="card-text">Criação de sites responsivos e personalizados para seu negócio.</p>
-                        <p class="card-text"><strong>Valor:</strong> R$ 1.500</p>
-                        <a href="#" class="btn btn-primary">Ver Detalhes</a>
+            {% for servico in servicos %}
+                <div class="col-md-4">
+                    <div class="card service-card mb-4">
+                        <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Serviço 1">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ servico.titulo_servicos }}</h5>
+                            <p class="card-text">{{ servico.desc_servicos }}</p>
+                            <p class="card-text"><strong>Valor:</strong> {{ servico.valor_servicos }}</p>
+                            <a href="{{ url("/me/servicos/#{servico.id_servicos}") }}" class="btn btn-primary">Ver Detalhes</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Card de Serviço 2 -->
-            <div class="col-md-4">
-                <div class="card service-card mb-4">
-                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Serviço 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Consultoria de Marketing</h5>
-                        <p class="card-text">Estratégias de marketing digital para alavancar seu negócio.</p>
-                        <p class="card-text"><strong>Valor:</strong> R$ 800</p>
-                        <a href="#" class="btn btn-primary">Ver Detalhes</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Card de Serviço 3 -->
-            <div class="col-md-4">
-                <div class="card service-card mb-4">
-                    <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Serviço 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Design Gráfico</h5>
-                        <p class="card-text">Criação de identidades visuais, logotipos e materiais gráficos.</p>
-                        <p class="card-text"><strong>Valor:</strong> R$ 600</p>
-                        <a href="#" class="btn btn-primary">Ver Detalhes</a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>

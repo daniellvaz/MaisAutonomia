@@ -23,11 +23,9 @@
 <main class="container my-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="mb-4 fw-bold">Meus Serviços</h3>
-        {% if profile == 'cliente' %}
         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cadastroServicoModal">
             Adicionar Novo Serviço
         </button>
-        {% endif %}
     </div>
 
     <div class="row" id="services">
