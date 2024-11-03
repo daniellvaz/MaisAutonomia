@@ -22,7 +22,6 @@ $twig = Twig::create(__DIR__ . '/../resources/views', ['cache' => false]);
 $app = AppFactory::create();
 $app->setBasePath($_ENV['BASE_PATH']);
 
-
 $app->add(TwigMiddleware::create($app, $twig));
 $app->get('/assets/{file:.+}', function (Request $request, Response $response, array $args) {
   $filePath = __DIR__ . '/../resources/assets/' . $args['file'];

@@ -8,7 +8,7 @@ $app->get('/me/inicio', [AppController::class, 'home']);
 $app->get('/me/perfil', [AppController::class, 'profile']);
 $app->get('/me/menssagens', [AppController::class, 'messages']);
 
-$app->get('/me/servicos/{id}', [AppController::class, 'details']);
+$app->get('/me/servicos/{id}', [ServiceController::class, 'show']);
 $app->post('/me/servicos/cadastro', [ServiceController::class, 'store']);
 $app->post('/me/servicos/atualiza/{id}', [ServiceController::class, 'update']);
 $app->delete('/me/servicos/deletar/{id}', [ServiceController::class, 'delete']);

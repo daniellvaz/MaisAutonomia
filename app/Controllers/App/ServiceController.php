@@ -9,6 +9,45 @@ use MaisAutonomia\Controllers\Controller;
 
 class ServiceController extends Controller
 {
+
+  public function show(Request $request, Response $response)
+  {
+    $id = $request->getAttribute('id');
+    $database = new Database();
+    $stmt = $database->query()->prepare("
+      SELECT 
+      * 
+      FROM servicos s 
+      WHERE s.id_servicos = :id
+    ");
+
+    $stmt->execute([
+      "id" => $id
+    ]);
+
+    $servico = $stmt->fetchAll();
+
+    $stmt = $database->query()->prepare("
+      SELECT 
+        * 
+      FROM propostas p
+      LEFT JOIN usuario u ON u.id_usuario = p.id_usuario
+      WHERE 1 = 1
+      AND p.id_servico = :servico
+    ");
+
+    $stmt->execute([
+      "servico" => $servico[0]['id_servicos']
+    ]);
+
+    $propostas = $stmt->fetchAll();
+
+    return $this->view->render($response, 'details.html', [
+      "servico" => $servico[0],
+      "propostas" => $propostas
+    ]);
+  }
+
   public function store (Request $request, Response $response): Response
   {
     $conn = new Database();

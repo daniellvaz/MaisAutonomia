@@ -47,12 +47,21 @@
                                 <div class="card-body">
                                     <h5 class="card-title">{{ servico.titulo_servicos }}</h5>
                                     <p id="description" class="card-text">{{ servico.desc_servicos }}</p>
-                                    <p class="card-text"><strong>Valor:</strong> {{ servico.valor_servicos }}</p>
+                                    <p class="card-text"><strong>Valor:</strong> {{ servico.valor_servicos|format_currency('BRL') }}</p>
                                 </div>
                             </div>
                         </a>
                     {% endfor %}
                 {% endif %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+                      <li class="page-item"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item"><a class="page-link" href="#">Próxima</a></li>
+                    </ul>
+                  </nav>
             </div>
         </div>
     </div>

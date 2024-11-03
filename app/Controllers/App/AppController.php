@@ -24,22 +24,6 @@ class AppController extends Controller
     ]);
   }
 
-  public function details(Request $request, Response $response)
-  {
-    $id = $request->getAttribute('id');
-    $database = new Database();
-    $stmt = $database->query()->prepare("SELECT * FROM servicos s WHERE s.id_servicos = :id");
-    $stmt->execute([
-      "id" => $id
-    ]);
-    $servico = $stmt->fetchAll();
-
-    return $this->view->render($response, 'details.html', [
-      "servico" => $servico[0],
-      "profile" => "cliente"
-    ]);
-  }
-
   public function messages(Request $request, Response $response)
   {
     $queries = $request->getQueryParams();

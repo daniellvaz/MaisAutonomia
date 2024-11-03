@@ -3,6 +3,7 @@
 namespace MaisAutonomia\Controllers;
 
 use Slim\Views\Twig;
+use Twig\Extra\Intl\IntlExtension;
 use Twig\TwigFunction;
 
 class Controller
@@ -20,6 +21,9 @@ class Controller
   public function __construct()
   {
     $this->view = Twig::create(__DIR__ . '/../../resources/views', ['cache' => false]);
+
+    $this->view->addExtension(new IntlExtension());
+    
     $this->view->offsetSet('user', isset($_SESSION["user"]) ? $_SESSION["user"] : null);
     $this->view->getEnvironment()->addFunction(new TwigFunction("url", function (?string $uri = null) {
       if ($uri) {
