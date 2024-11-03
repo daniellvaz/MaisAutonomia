@@ -9,5 +9,6 @@ $app->get('/me/menssagens', [AppController::class, 'messages']);
 
 $app->get('/me/servicos/{id}', [AppController::class, 'details']);
 $app->post('/me/servicos/cadastro', [ServiceController::class, 'store']);
+$app->post('/me/servicos/atualiza/{id}', [ServiceController::class, 'update']);
 
 $app->get('/me/deletar/usuario', [AppController::class, 'delete']);

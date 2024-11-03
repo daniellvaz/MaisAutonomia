@@ -37,7 +37,7 @@ class AccountController extends Controller
     }
 
     // Verificação do email caso tenha registro
-    $consemail = $conn->query()->prepare("SELECT * FROM `usuario` WHERE `email_user` = :email");
+    $consemail = $conn->query()->prepare("SELECT * FROM `usuario` WHERE `email_usuario` = :email");
     $consemail->bindValue(":email", $email);
     $consemail->execute();
 
@@ -51,7 +51,7 @@ class AccountController extends Controller
 
     // Grava os dados no banco
     $gravar = $conn->query()->prepare("
-      INSERT INTO `usuario` (`id_user`, `nome_user`, `email_user`, `senha_user`, `telefone_user`, `cpf_cnpj`, `cep_user`)
+      INSERT INTO `usuario` (`id_usuario`, `nome_usuario`, `email_usuario`, `senha_usuario`, `telefone_usuario`, `cpf_cnpj`, `cep_usuario`)
       VALUES (NULL, :nome, :email, :senha, :telefone, :cpf_cnpj, :cep);
     ");
     $gravar->bindValue(":nome", $nome);
@@ -62,7 +62,7 @@ class AccountController extends Controller
     $gravar->bindValue(":cep", $cep);
     $gravar->execute();
 
-    $usuario_consulta = $conn->query()->prepare("SELECT * FROM usuario WHERE  email_user = :email");
+    $usuario_consulta = $conn->query()->prepare("SELECT * FROM usuario WHERE  email_usuario = :email");
     $usuario_consulta->execute([
       "email" => $email
     ]);
@@ -80,8 +80,7 @@ class AccountController extends Controller
           VALUES (:usuario, :perfil);
         ");
 
-        $gravar_perfil->execute([
-          "usuario" => $usuario[0]['id_user'],
+        $gravar_perfil->execute(["usuario" => $usuario[0]['id_usuario'],
           "perfil"  => $perfil['id_perfil']
         ]);
       }
@@ -101,11 +100,10 @@ class AccountController extends Controller
     $perfis = $perfis_consulta->fetchAll();
 
     $gravar_perfil = $conn->query()->prepare("
-      INSERT INTO `usuario_perfil` (`id_user`, `id_perfil`)
+      INSERT INTO `usuario_perfil` (`id_usuario`, `id_perfil`)
       VALUES (:id_usuario, :id_perfil);
     ");
-    $gravar_perfil->execute([
-      "id_usuario" => $usuario[0]['id_user'],
+    $gravar_perfil->execute(["id_usuario" => $usuario[0]['id_usuario'],
       "id_perfil"  => $perfis[0]['id_perfil']
     ]);
 

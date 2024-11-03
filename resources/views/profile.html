@@ -5,7 +5,7 @@
 <main class="container my-5">
   <div class="row">
     <div class="col-md-4 text-center d-flex flex-column align-items-center bg-body">
-      <img id="avatar" src="{{ user.photo }}" alt="Foto do Usuário" class="img-fluid rounded-circle mb-3" width="200">
+      <img id="avatar" src="{{ user.avatar_user }}" alt="Foto do Usuário" class="img-fluid rounded-circle mb-3" width="200">
       <div class="d-flex gap-2">
         <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#atualizarFotoModal">Atualizar
           Foto
@@ -17,17 +17,6 @@
     </div>
     <div class="col-md-8">
       <h2>Perfil de Usuário</h2>
-<<<<<<< HEAD
-=======
-      <div class="col-md-4 text-center d-flex flex-column align-items-center bg-body">
-        <img id="avatar" src="{{ user.photo }}" alt="Foto do Usuário" class="img-fluid rounded-circle mb-3" width="200">
-        <div class="d-flex gap-2">
-          <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#atualizarFotoModal">Atualizar
-            Foto</button>
-            <a class="btn btn-danger" href="/MaisAutonomia/me/deletar/usuario?id={{ user.id }}">Deletar conta</a>
-        </div>
-      </div>
->>>>>>> c2a9598c2dd0893a1a97e4dfb32dc21ee035ac58
       <form>
         <div class="mb-3">
           <label for="nomeUsuario" class="form-label">Nome Completo</label>

@@ -19,12 +19,18 @@ $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->safeLoad();
 $twig = Twig::create(__DIR__ . '/../resources/views', ['cache' => false]);
 
+$message = isset($_GET['message']) ? [
+  "value" => $_GET['message'],
+  "type"  => $_GET['type'] ?? "success"
+] : null;
+
+$twig->offsetSet('message', $message);
+
 $app = AppFactory::create();
 $app->setBasePath($_ENV['BASE_PATH']);
 
 
 $app->add(TwigMiddleware::create($app, $twig));
-// Middleware para servir arquivos estáticos da pasta resources/assets
 $app->get('/assets/{file:.+}', function (Request $request, Response $response, array $args) {
   $filePath = __DIR__ . '/../resources/assets/' . $args['file'];
 

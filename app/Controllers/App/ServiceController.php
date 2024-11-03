@@ -1,5 +1,6 @@
 <?php
-namespace MaisAutonomia\Controllers\App\ServiceController;
+
+namespace MaisAutonomia\Controllers\App;
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -13,13 +14,12 @@ class ServiceController extends Controller
     $conn = new Database();
 
     $titulo_servicos = $_POST['titulo_servicos'];
-    $desc_servicos= $_POST['desc_servicos'];
-    $valor_servicos = $_POST['valor_servicos'];
-    $prazo_servicos= $_POST['prazo_servicos'];
+    $desc_servicos   = $_POST['desc_servicos'];
+    $valor_servicos  = $_POST['valor_servicos'];
+    $prazo_servicos  = $_POST['prazo_servicos'];
 
     $uploadsDir = "uploads/";
     $imagens = ["", "", ""]; 
-
 
     for ($i = 0; $i < 3; $i++) {
         if (!empty($_FILES["imagem"]["name"][$i])) {
@@ -31,9 +31,57 @@ class ServiceController extends Controller
         }
     }
 
-    $stmt = $conn->query()->prepare("INSERT INTO servicos (titulo_servicos, desc_servicos, valor_servicos, prazo_servicos, imagem1, imagem2, imagem3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$nomeCompleto, $cpf, $email, $telefone, $logradouro, $uf, $cidade, $tipoServico, $imagens[0], $imagens[1], $imagens[2]]);
+    $stmt = $conn->query()->prepare("
+      INSERT INTO servicos 
+      (titulo_servicos, desc_servicos, valor_servicos, prazo_servicos, id_cliente) 
+      VALUES 
+      (:titulo, :descricao, :valor, :prazo, :cliente)
+    ");
+    $stmt->execute([
+      "titulo"    => $titulo_servicos,
+      "descricao" => $desc_servicos,
+      "valor"     => $valor_servicos,
+      "prazo"     => $prazo_servicos,
+      "cliente" => $_SESSION['user']['id_usuario']
+    ]);
 
-    echo '<div class="alert alert-success">Serviço cadastrado com sucesso!</div>'; // Mensagem de sucess
+    // Redireciona para a página inicial (pode ser uma página de dashboard)
+    return $response
+      ->withHeader("Location", $_ENV['BASE_URL'] . "/me/inicio?mensagem=Serviço%20cadastrado%20com%20sucesso")
+      ->withStatus(301);
+  }
+
+  public function update(Request $request, Response $response): Response
+  {
+    $conn = new Database();
+    $id              = $request->getAttribute('id');
+    $titulo_servicos = $_POST['titulo_servicos'];
+    $desc_servicos   = $_POST['desc_servicos'];
+    $valor_servicos  = $_POST['valor_servicos'];
+    $prazo_servicos  = $_POST['prazo_servicos'];
+    $status_servicos = $_POST['status_servicos'];
+
+    $stmt = $conn->query()->prepare("
+      UPDATE servicos 
+      SET  
+        titulo_servicos = :titulo,
+        desc_servicos   = :desc,
+        valor_servicos  = :valor,
+        prazo_servicos  = :prazo,
+        status_servicos = :status
+      WHERE id_servicos = :id
+    ");
+    $stmt->execute([
+      "titulo" => $titulo_servicos,
+      "desc"   => $desc_servicos,
+      "valor"  => $valor_servicos,
+      "prazo"  => $prazo_servicos,
+      "status" => $status_servicos,
+      "id"     => $id
+    ]);
+
+    return $response
+      ->withHeader("Location", $_ENV['BASE_URL'] . "/me/servicos/{$id}?message=Serviço%20atualizado%20com%20sucesso")
+      ->withStatus(301);
   }
 }

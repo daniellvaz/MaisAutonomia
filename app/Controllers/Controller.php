@@ -7,6 +7,10 @@ use Twig\TwigFunction;
 
 class Controller
 {
+  /**
+   * Summary of view
+   * @var \Slim\Views\Twig $view
+   */
   public $view = null;
 
   /**
