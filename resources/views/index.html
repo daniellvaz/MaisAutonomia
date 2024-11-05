@@ -35,6 +35,10 @@
             object-fit: cover;
             filter: brightness(0.5) opacity(0.75);
         }
+
+        #card-link {
+            text-decoration: none;
+        }
     </style>
 {% endblock head %}
 
@@ -49,6 +53,7 @@
             <div class="carousel-caption d-none d-md-block">
                 <h5>Conecte-se com Autônomos Qualificados</h5>
                 <p>Serviços rápidos e profissionais para atender suas necessidades.</p>
+                <a href="{{ url('/servicos') }}" class="btn btn-primary btn-lg mt-4">Buscar servicos</a>
             </div>
         </div>
         <div class="carousel-item">
@@ -56,6 +61,7 @@
             <div class="carousel-caption d-none d-md-block">
                 <h5>Segurança e Praticidade</h5>
                 <p>Uma plataforma confiável para contratar serviços com total tranquilidade.</p>
+                <a href="{{ url('/servicos') }}" class="btn btn-primary btn-lg mt-4">Buscar servicos</a>
             </div>
         </div>
         <div class="carousel-item">
@@ -63,6 +69,7 @@
             <div class="carousel-caption d-none d-md-block">
                 <h5>Expanda Suas Oportunidades</h5>
                 <p>Autônomos podem conquistar novos clientes e fortalecer sua presença online.</p>
+                <a href="{{ url('/servicos') }}" class="btn btn-primary btn-lg mt-4">Buscar servicos</a>
             </div>
         </div>
     </div>
@@ -75,20 +82,6 @@
         <span class="visually-hidden">Próximo</span>
     </button>
 </div>
-
-<!-- Hero Section -->
-<section class="hero text-center">
-    <div class="container">
-        <h1 class="font-weight-bold">
-            Conecte-se com Profissionais <br> Autônomos de Forma <span class="text-primary">Eficiente</span></h1>
-        <p class="lead mt-4">
-            <strong>Encontre o profissional ideal para suas necessidades em poucos cliques.</strong><br>
-            O Mais Autonomia é uma plataforma inovadora que facilita a conexão entre prestadores de serviços
-            independentes e clientes em busca de soluções especializadas.
-        </p>
-        <a href="{{ url('/cadastro') }}" class="btn btn-primary btn-lg mt-4">Cadastre-se Agora</a>
-    </div>
-</section>
 
 <!-- Collapse Section: Por que escolher o Mais Autonomia? -->
 <section class="container my-5">
@@ -156,55 +149,4 @@
         </div>
     </div>
 </section>
-
-<!-- Serviços Recentes -->
-<section class="recent-services">
-    <div class="container">
-        <h2 class="mb-4">Serviços Recentes</h2>
-        <div class="filter-section">
-
-            <form class="row g-3">
-                <div class="col-md-4">
-                    <input type="text" name="titulo" class="form-control" placeholder="Buscar por serviço" id="searchService">
-                </div>
-                <div class="col-md-3">
-                    <select class="form-select" id="filterCategory">
-                        <option selected>Categoria</option>
-                        <option value="1">Design</option>
-                        <option value="2">Desenvolvimento</option>
-                        <option value="3">Marketing</option>
-                        <option value="4">Consultoria</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-select" id="filterPrice">
-                        <option selected>Faixa de Preço</option>
-                        <option value="1">Até R$ 100</option>
-                        <option value="2">R$ 100 - R$ 500</option>
-                        <option value="3">Acima de R$ 500</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary w-100">Buscar</button>
-                </div>
-            </form>
-        </div>
-        <div class="row">
-            {% for servico in servicos %}
-                <div class="col-md-4">
-                    <div class="card service-card mb-4">
-                        <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Serviço 1">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ servico.titulo_servicos }}</h5>
-                            <p class="card-text">{{ servico.desc_servicos }}</p>
-                            <p class="card-text"><strong>Valor:</strong> {{ servico.valor_servicos }}</p>
-                            <a href="{{ url("/me/servicos/#{servico.id_servicos}") }}" class="btn btn-primary">Ver Detalhes</a>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
 {% endblock content %}

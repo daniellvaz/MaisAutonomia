@@ -4,21 +4,26 @@
 
 {% block content %}
 {% include 'components/header.html' %}
-<main class="container my-5">
+<main class="container my-3 min-vh-100">
     <div class="row">
         <div class="col-md-12">
-            <h2>Detalhes do Pedido</h2>
-            <div class="card">
+            <h2>Detalhes do serviço</h2>
+            <div class="card mt-4">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <strong class="fs-5">Pedido #{{ servico.id_servicos }}</strong>
-                    {% if profile == 'cliente' %}
-                    <button class="btn btn-outline-primary float-end" data-bs-toggle="modal" data-bs-target="#atualizarPedidoModal">
-                        Atualizar Pedido
-                    </button>
+                    <strong class="fs-5">Serviço #{{ servico.id_servicos }}</strong>
+                    {% if user and servico.id_cliente == user.id_usuario %}
+                       <div class="d-flex gap-2 align-items-center">
+                            <button class="btn btn-outline-primary float-end" data-bs-toggle="modal" data-bs-target="#atualizarPedidoModal">
+                                Atualizar o serviço
+                            </button>   
+                            <button class="btn btn-outline-danger float-end" data-bs-toggle="modal" data-bs-target="#deletaServicoModal">
+                                Deletar o serviço
+                            </button> 
+                       </div>  
                     {% else %}
-                    <a href="{{ url('/me/chat/novo') }}" class="btn btn-outline-primary float-end">
-                        Falar com o cliente
-                    </a>
+                        <a href="{{ url("/me/proposta/#{servico.id_servicos}") }}" class="btn btn-outline-primary float-end">
+                            Fazer uma proposta
+                        </a>
                     {% endif %}
                 </div>
                 <div class="card-body">
@@ -28,20 +33,39 @@
                     <div class="mb-3">
                         <h6 class="fw-bold">Detalhes do Serviço</h6>
                         <p class="mb-1"><strong>Descrição:</strong> {{ servico.desc_servicos }}</p>
-                        <p class="mb-1"><strong>Valor:</strong> R$ {{ servico.valor_servicos }}</p>
+                        <p class="mb-1"><strong>Valor:</strong>{{ servico.valor_servicos|format_currency('BRL') }}</p>
                         <p class="mb-1"><strong>Prazo de Entrega:</strong> {{ servico.prazo_servicos|date('d/m/Y') }}</p>
                         <p class="mb-1"><strong>Status:</strong> {{ servico.status_servicos }}</p>
                     </div>
                     <hr>
                 
-                    {% if servico.id_autonomo == 'cliente' %}
-                    <!-- Informações do Autônomo -->
-                    <div class="mb-3">
-                        <h6 class="fw-bold">Informações do Autônomo</h6>
-                        <p class="mb-1"><strong>Nome:</strong> Maria de Souza</p>
-                        <p class="mb-1"><strong>Telefone:</strong> (00) 9876-5432</p>
-                        <p class="mb-1"><strong>E-mail:</strong> maria@email.com</p>
-                    </div>
+                    {% if propostas %}
+                        {% for proposta in propostas  %}
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="fw-bold">{{ proposta.nome_usuario }}</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p class="mb-1"><strong>Telefone:</strong> {{ proposta.telefone_usuario }}</p>
+                                    <p class="mb-1"><strong>E-mail:</strong> {{ proposta.email_usuario }}</p>
+                                    {% if servico.id_cliente == user.id_usuario %}
+                                        <p class="mb-1"><strong>Valor:</strong> {{ proposta.valor_proposta|format_currency('BRL') }}</p>
+                                    {% endif %}
+                                    <hr>
+                                    <p>{{ proposta.descricao_proposta }}</p>
+                                </div>
+                                {% if servico.id_cliente == user.id_usuario %}
+                                    <div class="card-footer">
+                                        <button class="btn btn-primary">
+                                            Aceitar
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            Rejeitar
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
                     {% else %}
                     <div class="mb-3">
                         <p class="mb-1">Aguardando propostas</p>
@@ -95,4 +119,39 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deletaServicoModal" tabindex="-1" aria-labelledby="deletaServicoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deletaServicoLabel">Deletar serviço</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Deseja realmente deletar o serviço {{ servico.id_servicos }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-danger" onclick="deletarServico()">Deletar</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
+
+{% block script %}
+    <script>
+        const deletarServico = async () => {
+            try {
+                const id = "{{ servico.id_servicos }}"
+                const response = await fetch(`{{ url("/me/servicos/deletar/") }}${id}`, {
+                    method: "DELETE"
+                });
+
+                window.location = response.url
+            } catch (error) {
+                
+            }
+        }
+    </script>
+{% endblock script %}

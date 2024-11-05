@@ -6,6 +6,7 @@ use MaisAutonomia\Controllers\Web\WebController;
 
 $app->get('/', [WebController::class, 'home']);
 $app->get('/login', [WebController::class, 'login']);
+$app->get('/servicos', [WebController::class, 'jobs']);
 $app->get('/cadastro', [WebController::class, 'register']);
 
 $app->post('/login', [SessionController::class, 'login']);

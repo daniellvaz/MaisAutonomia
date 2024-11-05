@@ -9,6 +9,45 @@ use MaisAutonomia\Controllers\Controller;
 
 class ServiceController extends Controller
 {
+
+  public function show(Request $request, Response $response)
+  {
+    $id = $request->getAttribute('id');
+    $database = new Database();
+    $stmt = $database->query()->prepare("
+      SELECT 
+      * 
+      FROM servicos s 
+      WHERE s.id_servicos = :id
+    ");
+
+    $stmt->execute([
+      "id" => $id
+    ]);
+
+    $servico = $stmt->fetchAll();
+
+    $stmt = $database->query()->prepare("
+      SELECT 
+        * 
+      FROM propostas p
+      LEFT JOIN usuario u ON u.id_usuario = p.id_usuario
+      WHERE 1 = 1
+      AND p.id_servico = :servico
+    ");
+
+    $stmt->execute([
+      "servico" => $servico[0]['id_servicos']
+    ]);
+
+    $propostas = $stmt->fetchAll();
+
+    return $this->view->render($response, 'details.html', [
+      "servico" => $servico[0],
+      "propostas" => $propostas
+    ]);
+  }
+
   public function store (Request $request, Response $response): Response
   {
     $conn = new Database();
@@ -82,6 +121,21 @@ class ServiceController extends Controller
 
     return $response
       ->withHeader("Location", $_ENV['BASE_URL'] . "/me/servicos/{$id}?message=Serviço%20atualizado%20com%20sucesso")
+      ->withStatus(301);
+  }
+
+  public function delete(Request $request, Response $response): Response
+  {
+    $id    = $request->getAttribute('id');
+    $query = "DELETE FROM servicos s WHERE s.id_servicos = :id";
+    $stmt  = (new Database())->query()->prepare($query);
+
+    $stmt->execute([
+      'id' => $id
+    ]);
+
+    return $response
+      ->withHeader("Location", $_ENV['BASE_URL'] . "/me/inicio?message=Serviço%20deletado%20com%20sucesso")
       ->withStatus(301);
   }
 }

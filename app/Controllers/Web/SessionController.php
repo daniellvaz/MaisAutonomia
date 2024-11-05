@@ -14,11 +14,11 @@ class SessionController extends Controller
     $database = new Database();
 
     // Verifica o usuário no banco de dados
-    $stmt = $database->query()->prepare("SELECT * FROM usuario WHERE email_user = :email");
+    $stmt = $database->query()->prepare("SELECT * FROM usuario WHERE email_usuario = :email");
     $stmt->execute(['email' => $email]);
     $usuario = $stmt->fetch();
 
-    if (!$usuario || !password_verify($senha, $usuario['senha_user'])) {
+    if (!$usuario || !password_verify($senha, $usuario['senha_usuario'])) {
       return $response
         ->withHeader("Location", $_ENV['BASE_URL'] . "/login?erro=Usuário%20ou%20senha%20não%20conferem!")
         ->withStatus(301);
