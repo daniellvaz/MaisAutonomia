@@ -1,18 +1,40 @@
 {% extends 'templates/layout.html' %}
 {% block title %}Mais Autonomia | {{ user.nome_usuario }}{% endblock title %}
+{% block head %}
+  <style>
+    .badge {
+      width: fit-content;
+    }
+  </style>
+{% endblock head %}
 {% block content %}
 {% include 'components/header.html' %}
-<main class="container my-5">
+<main class="container my-5 min-vh-100">
   <div class="row">
     <div class="col-md-4 text-center d-flex flex-column align-items-center bg-body">
       <img id="avatar" src="{{ user.avatar_usuario }}" alt="Foto do Usuário" class="img-fluid rounded-circle mb-3" width="200">
-      <div class="d-flex gap-2">
+      <div class="d-flex gap-2 mb-5">
         <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#atualizarFotoModal">Atualizar
           Foto
         </button>
         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletaContaModal">
           Deletar Conta
         </button>
+      </div>
+      <div class="w-100">
+        <form class="row g-3" action="{{ url('/me/perfil/formexp') }}" method="post" id="formexp">
+          <div class="col-auto">
+            <input class="form-control" name="formexp" placeholder="Formação/Exeperiência">
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3" form="formexp">Inserir</button>
+          </div>
+        </form>
+        <div class="card w-100 p-4 d-grid gap-2">
+          {% for formexp in formexps %}
+            <span class="badge bg-secondary">{{ formexp.titulo_form_exp }}</span>
+          {% endfor %}
+        </div>
       </div>
     </div>
     <div class="col-md-8">

@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 use MaisAutonomia\Database\Database;
+use PDO;
 
 class AppController extends Controller
 {
@@ -35,7 +36,18 @@ class AppController extends Controller
 
   public function profile(Request $request, Response $response)
   {
-    return $this->view->render($response, 'profile.html');
+    $id = $_SESSION['user']['id_usuario'];
+    $query = "SELECT * FROM formacao_experiencia f WHERE f.id_usuario = :usuario";
+    $stmt = (new Database())->query()->prepare($query);
+    $stmt->execute([
+      "usuario" => $id
+    ]);
+
+    $formexps = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $this->view->render($response, 'profile.html', [
+      "formexps" => $formexps
+    ]);
   }
 
   public function delete(Request $request, Response $response)

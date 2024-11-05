@@ -252,4 +252,20 @@ class AccountController extends Controller
       ->withHeader("Location",  "{$_ENV['BASE_URL']}/?message=Foto%20enviada%20com%20sucesso!")
       ->withStatus(301);
   }
+
+  public function formexp(Request $request, Response $response): Response
+  {
+    $formexp = $_POST['formexp'];
+
+    $gravar = (new Database())->query()->prepare("INSERT INTO formacao_experiencia (`titulo_form_exp`, `id_usuario`) VALUES (:titulo, :usuario)");
+
+    $gravar->execute([
+      "titulo" => $formexp,
+      "usuario" => $_SESSION['user']['id_usuario']
+    ]);
+
+    return $response
+      ->withHeader("Location",  "{$_ENV['BASE_URL']}/me/perfil?message=Formação/Experiência%20inserida%20com%20sucesso!")
+      ->withStatus(301);
+  }
 }

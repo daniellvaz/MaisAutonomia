@@ -21,6 +21,7 @@ $app->get('/me/servico/{id_servico}/proposta', [ProposalController::class, 'show
 $app->post('/me/servico/{id_servico}/proposta', [ProposalController::class, 'store']);
 $app->patch('/me/proposta/{id}/atualizar/{status}', [ProposalController::class, 'updateStatus']);
 
+$app->post('/me/perfil/formexp', [AccountController::class, 'formexp']);
 $app->post('/me/perfil/atualiza/{id}', [AccountController::class, 'update']);
 $app->delete('/me/deletar/usuario/{id}', [AccountController::class, 'drop']);
 $app->post('/me/perfil/avatar/upload', [AccountController::class, 'upload_avatar']);
