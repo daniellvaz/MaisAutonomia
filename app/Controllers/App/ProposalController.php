@@ -65,7 +65,7 @@ class ProposalController extends Controller
   {
     if (!isset($_SESSION['user'])) {
       return $response
-        ->withHeader("Location", $_ENV['BASE_URL'] . "/me/proposta/{$request->getAttribute('id_servico')}?message=Por%20favor,%20faça%20o%20login%20ou%20crie%20uma%20conta!")
+        ->withHeader("Location", $_ENV['BASE_URL'] . "/me/servico/{$request->getAttribute('id_servico')}/proposta?message=Por%20favor,%20faça%20o%20login%20ou%20crie%20uma%20conta!")
         ->withStatus(301);
     }
 

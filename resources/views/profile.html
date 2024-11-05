@@ -17,7 +17,7 @@
     </div>
     <div class="col-md-8">
       <h2>Perfil de Usuário</h2>
-      <form action="{{ url("/me/perfil/atualiza/#{user.id_usuario}") }}" method="post">
+      <form action="{{ url("/me/perfil/atualiza/#{user.id_usuario}") }}" method="POST" id="update">
         <div class="mb-3">
           <label for="nome_usuario" class="form-label">Nome Completo</label>
           <input type="text" class="form-control" id="nome_usuario" name="nome_usuario" value="{{ user.nome_usuario }}">
@@ -38,7 +38,7 @@
           <label for="cep_usuario" class="form-label">CEP</label>
           <input type="text" class="form-control" id="cep_usuario" name="cep_usuario" value="{{ user.cep_usuario }}">
         </div>
-        <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
+        <button type="submit" class="btn btn-primary" form="update">Atualizar Perfil</button>
       </form>
     </div>
   </div>
@@ -57,8 +57,8 @@
         <p>Ao deletar sua conta, não poderá mais ter acesso a plataforma!</p>
       </div>
       <div class="modal-footer">
-        <a href="<{{ url('/perfil/deletar') }}>" class="btn btn-success">Deletar</a>
-        <button class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger">Deletar</button>
       </div>
     </div>
   </div>
@@ -74,30 +74,20 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form id="update_photo" action="{{ url('/me/perfil/avatar/upload') }}" method="post" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="fotoPerfil" class="form-label">Escolha uma nova foto</label>
-            <input type="file" class="form-control" id="input-avatar">
+            <input type="file" class="form-control" id="input-avatar" name="avatar">
           </div>
-          <button type="submit" class="btn btn-primary">Salvar</button>
+          <button type="submit" class="btn btn-primary" form="update_photo">Salvar</button>
         </form>
       </div>
     </div>
   </div>
 </div>
 {% block script %}
-<!-- Scripts do Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script>
-  const avatar = document.getElementById("avatar");
-  const input = document.getElementById("input-avatar");
-
-  input.addEventListener('change', evt => {
-    const [file] = input.files
-    if (file) {
-      avatar.src = URL.createObjectURL(file)
-    }
-  })
+  
 </script>
 {% endblock script %}
 {% endblock content %}

@@ -2,7 +2,7 @@
 {% block title %}Mais Autonomia | Propsta {% endblock %}
 {% block content %}
 {% include 'components/header.html' %}
-<div class="container my-5">
+<div class="container my-5 min-vh-100">
     <h2 class="text-center mb-4">Enviar Proposta</h2>
     <form method="post" action="{{ url("/me/servico/#{id_servico}/proposta") }}">
         <div class="mb-3">
