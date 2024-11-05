@@ -6,6 +6,7 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use MaisAutonomia\Database\Database;
 use MaisAutonomia\Controllers\Controller;
+use PDO;
 
 class ProposalController extends Controller
 {
@@ -16,6 +17,7 @@ class ProposalController extends Controller
       SELECT 
         * 
       FROM propostas p 
+      LEFT JOIN servicos s ON s.id_servicos = p.id_servico
       WHERE p.id_usuario = :usuario
       LIMIT 5 OFFSET {$offset}
     ";
@@ -26,7 +28,7 @@ class ProposalController extends Controller
     ]);
     $propostas = $stmt->fetchAll();
 
-    return $this->view->render($response, 'my-proposal.html', [
+    return $this->view->render($response, 'proposals.html', [
       "propostas" => $propostas,
       "page"      => $this->page,
       "has_more"  => true
@@ -37,8 +39,25 @@ class ProposalController extends Controller
   {
     $id_servico = $request->getAttribute('id_servico');
 
-    return $this->view->render($response, 'proposal.html', [
+    return $this->view->render($response, 'proposal-create.html', [
       "id_servico" => $id_servico
+    ]);
+  }
+
+  public function details(Request $request, Response $response): Response
+  {
+    $id = $request->getAttribute('id');
+    $query = "SELECT * FROM propostas p LEFT JOIN servicos s ON s.id_servicos = p.id_servico WHERE p.id_proposta = :id";
+    $stmt = (new Database())->query()->prepare($query);
+
+    $stmt->execute([
+      "id" => $id
+    ]);
+
+    $proposta = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $this->view->render($response, 'proposal-details.html', [
+      "proposta" => $proposta[0]
     ]);
   }
 
@@ -78,7 +97,7 @@ class ProposalController extends Controller
 
     if (intval($total_de_propostas) > 0) {
       return $response
-        ->withHeader("Location", $_ENV['BASE_URL'] . "/me/proposta/{$id_servico}?message=Você%20ja%20enviou%20uma%20proposta")
+        ->withHeader("Location", $_ENV['BASE_URL'] . "/me/servico/{$id_servico}/proposta?message=Você%20ja%20enviou%20uma%20proposta")
         ->withStatus(301);
     }
 
@@ -100,6 +119,76 @@ class ProposalController extends Controller
 
     return $response
       ->withHeader("Location", $_ENV['BASE_URL'] . "/me/inicio?message=Proposta%20enviada%20com%20sucesso")
+      ->withStatus(301);
+  }
+
+  public function update(Request $request, Response $response): Response
+  {
+    $id = $request->getAttribute('id');
+
+    if (!isset($_POST['valor_proposta']) || intval($_POST['valor_proposta']) <= 50) {
+      return $response
+        ->withHeader("Location", $_ENV['BASE_URL'] . "/me/proposta/{$id}?message=Insira um valor válido!")
+        ->withStatus(301);
+    }
+
+    $valor = $_POST['valor_proposta'];
+    $query = "SELECT * FROM propostas p WHERE p.id_proposta = :id";
+    $stmt = (new Database())->query()->prepare($query);
+
+    $stmt->execute([
+      "id" => $id
+    ]);
+
+    $proposta = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!isset($proposta[0])) {
+      return $response
+        ->withHeader("Location", $_ENV['BASE_URL'] . "/me/proposta/{$id}?message=Proposta%20não%20encontrada!")
+        ->withStatus(301);
+    }
+
+    $query = "UPDATE propostas SET propostas.valor_proposta = :valor WHERE propostas.id_proposta = :id";
+    $stmt = (new Database())->query()->prepare($query);
+    $stmt->execute([
+      "id"    => $id,
+      "valor" => $valor
+    ]);
+
+    return $response
+      ->withHeader("Location", $_ENV['BASE_URL'] . "/me/proposta/{$id}?message=Proposta%20atualiza%20com%20sucesso!")
+      ->withStatus(301);
+  }
+
+  public function updateStatus(Request $request, Response $response): Response
+  {
+    $id = $request->getAttribute('id');
+    $status = $request->getAttribute('status');
+
+    $query = "SELECT * FROM propostas p WHERE p.id_proposta = :id";
+    $stmt = (new Database())->query()->prepare($query);
+
+    $stmt->execute([
+      "id" => $id
+    ]);
+
+    $proposta = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!isset($proposta[0])) {
+      return $response
+        ->withHeader("Location", $_ENV['BASE_URL'] . "/me/servicos/{$proposta[0]['id_servico']}?message=Proposta%20não%20encontrada!")
+        ->withStatus(301);
+    }
+
+    $query = "UPDATE propostas SET propostas.status_proposta = :status_proposta WHERE propostas.id_proposta = :id";
+    $stmt = (new Database())->query()->prepare($query);
+    $stmt->execute([
+      "id"     => $id,
+      "status_proposta" => $status
+    ]);
+
+    return $response
+      ->withHeader("Location", $_ENV['BASE_URL'] . "/me/servicos/{$proposta[0]['id_servico']}?message=Proposta%20{$status}!")
       ->withStatus(301);
   }
 }
