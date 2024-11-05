@@ -13,6 +13,7 @@ $app->post('/me/servicos/cadastro', [ServiceController::class, 'store']);
 $app->post('/me/servicos/atualiza/{id}', [ServiceController::class, 'update']);
 $app->delete('/me/servicos/deletar/{id}', [ServiceController::class, 'delete']);
 
+$app->get('/me/propostas', [ProposalController::class, 'index']);
 $app->get('/me/proposta/{id_servico}', [ProposalController::class, 'show']);
 $app->post('/me/proposta/{id_servico}/nova', [ProposalController::class, 'store']);
 

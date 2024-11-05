@@ -9,6 +9,29 @@ use MaisAutonomia\Controllers\Controller;
 
 class ProposalController extends Controller
 {
+  public function index(Request $request, Response $response): Response
+  {
+    $offset = ($this->page - 1) * 5;
+    $query = "
+      SELECT 
+        * 
+      FROM propostas p 
+      WHERE p.id_usuario = :usuario
+      LIMIT 5 OFFSET {$offset}
+    ";
+
+    $stmt = (new Database())->query()->prepare($query);
+    $stmt->execute([
+      'usuario' => $_SESSION['user']['id_usuario']
+    ]);
+    $propostas = $stmt->fetchAll();
+
+    return $this->view->render($response, 'my-proposal.html', [
+      "propostas" => $propostas,
+      "page"      => $this->page,
+      "has_more"  => true
+    ]);
+  }
 
   public function show(Request $request, Response $response): Response
   {
@@ -21,6 +44,12 @@ class ProposalController extends Controller
 
   public function store(Request $request, Response $response): Response
   {
+    if (!isset($_SESSION['user'])) {
+      return $response
+        ->withHeader("Location", $_ENV['BASE_URL'] . "/me/proposta/{$request->getAttribute('id_servico')}?message=Por%20favor,%20faça%20o%20login%20ou%20crie%20uma%20conta!")
+        ->withStatus(301);
+    }
+
     $database = new Database();
 
     $descricao_proposta = $_POST['descricao_proposta'];
