@@ -103,9 +103,9 @@ class AppController extends Controller
 
   public function rating(Request $request, Response $response): Response
   {
-    $id_usuario = $request->getAttribute('id_usuario');
-    $range = $_POST['range'];
-    $avaliacao = $_POST['avaliacao'];
+      $id_usuario = $request->getAttribute('id_usuario');
+      $range = $_POST['range'];
+      $avaliacao = $_POST['avaliacao'];
 
     // Seu codigo aqui
 
