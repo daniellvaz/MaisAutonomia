@@ -107,9 +107,6 @@ class AppController extends Controller
     $range = $_POST['range'];
     $avaliacao = $_POST['avaliacao'];
 
-    echo '<pre>' . print_r($id_usuario, true) . '</pre>';
-    die;
-
     // Seu codigo aqui
 
     return $response
