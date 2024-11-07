@@ -110,7 +110,7 @@ class AppController extends Controller
     // Seu codigo aqui
 
     return $response
-      ->withHeader("Location", $_ENV['BASE_URL'] . "/me/perfil/{}?message=Avaliação%20enviada%20com%20sucesso!")
+      ->withHeader("Location", $_ENV['BASE_URL'] . "/me/perfil/{$id_usuario}?message=Avaliação%20enviada%20com%20sucesso!")
       ->withStatus(301);
   }
 }
