@@ -60,14 +60,14 @@
                         </div>
                         {% if servico.id_cliente == user.id_usuario %}
                             <div class="card-footer">
-                                <button class="btn btn-primary" onclick="atualizarServico('Aprovada', {{ proposta.id_proposta }})"
+                                <button class="btn btn-primary" onclick="atualizarServico('Aprovada', {{ proposta.id_proposta }}, {{ proposta.id_usuario }})"
                                     {% if proposta.status_proposta == 'Aprovada' or proposta.status_proposta == 'Rejeitada' %}
                                         disabled
                                     {% endif %}
                                 >
                                     Aprovar
                                 </button>
-                                <button class="btn btn-danger" onclick="atualizarServico('Rejeitada', {{ proposta.id_proposta }})"
+                                <button class="btn btn-danger" onclick="atualizarServico('Rejeitada', {{ proposta.id_proposta }}, {{ proposta.id_usuario }})"
                                     {% if proposta.status_proposta == 'Rejeitada' %}
                                         disabled
                                     {% endif %}
@@ -163,12 +163,12 @@
             }
         }
 
-        const atualizarServico = async (status, id) => {
+        const atualizarServico = async (status, id, autonomo) => {
             try {
                 const payload = {
                     status
                 }
-                const response = await fetch(`{{ url("/me/proposta/${id}/atualizar/${status}") }}`, {
+                const response = await fetch(`{{ url("/me/proposta/${id}/atualizar/${status}/usuario/${autonomo}") }}`, {
                     method: "PATCH"
                 });
 

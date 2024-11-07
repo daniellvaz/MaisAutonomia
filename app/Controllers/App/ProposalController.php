@@ -164,6 +164,7 @@ class ProposalController extends Controller
   {
     $id = $request->getAttribute('id');
     $status = $request->getAttribute('status');
+    $id_autonomo        = $request->getAttribute('autonomo');
 
     $query = "SELECT * FROM propostas p WHERE p.id_proposta = :id";
     $stmt = (new Database())->query()->prepare($query);
@@ -185,6 +186,13 @@ class ProposalController extends Controller
     $stmt->execute([
       "id"     => $id,
       "status_proposta" => $status
+    ]);
+
+    $query = "UPDATE servicos SET servicos.id_autonomo = :autonomo WHERE servicos.id_servicos = :id";
+    $stmt = (new Database())->query()->prepare($query);
+    $stmt->execute([
+      "id"       => $proposta[0]['id_servico'],
+      "autonomo" => $id_autonomo
     ]);
 
     return $response
