@@ -57,19 +57,6 @@ class ServiceController extends Controller
     $valor_servicos  = $_POST['valor_servicos'];
     $prazo_servicos  = $_POST['prazo_servicos'];
 
-    $uploadsDir = "uploads/";
-    $imagens = ["", "", ""]; 
-
-    for ($i = 0; $i < 3; $i++) {
-        if (!empty($_FILES["imagem"]["name"][$i])) {
-            $imagemTmp = $_FILES["imagem"]["tmp_name"][$i];
-            $imagemNome = $uploadsDir . uniqid() . "_" . basename($_FILES["imagem"]["name"][$i]);
-            if (move_uploaded_file($imagemTmp, $imagemNome)) {
-                $imagens[$i] = $imagemNome; // Adiciona o nome da imagem ao array
-            }
-        }
-    }
-
     $stmt = $conn->query()->prepare("
       INSERT INTO servicos 
       (titulo_servicos, desc_servicos, valor_servicos, prazo_servicos, id_cliente) 

@@ -7,6 +7,7 @@ use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use MaisAutonomia\Database\Database;
 use MaisAutonomia\Controllers\Controller;
+use Slim\Psr7\UploadedFile;
 
 class AccountController extends Controller
 {
@@ -111,6 +112,160 @@ class AccountController extends Controller
 
     return $response
       ->withHeader('Location', $_ENV['BASE_URL'] . "/login?sucesso=Conta%20criada%20com%20sucesso!")
+      ->withStatus(301);
+  }
+
+  public function update(Request $request, Response $response): Response
+  {
+    $id = $request->getAttribute('id');
+    $body = $request->getParsedBody();
+
+    $nome     = $body['nome_usuario'];
+    $email    = $body['email_usuario'];
+    $telefone = $body['telefone_usuario'];
+    $cpf_cnpj = $body['cpf_cnpj'];
+    $cep      = $body['cep_usuario'];
+
+    $query = "
+      UPDATE usuario 
+      SET 
+        nome_usuario = :nome, 
+        email_usuario = :email, 
+        telefone_usuario = :telefone,
+        cpf_cnpj = :cpf_cnpj,
+        cep_usuario = :cep
+      WHERE id_usuario = :id
+    ";
+
+    $stmt = (new Database())->query()->prepare($query);
+
+    $stmt->execute([
+      "id"       => $id,
+      "nome"     => $nome,
+      "email"    => $email,
+      "telefone" => $telefone,
+      "cpf_cnpj" => $cpf_cnpj,
+      "cep"      => $cep,
+    ]);
+
+    $query = "SELECT * FROM usuario u WHERE u.id_usuario = :id";
+
+    $stmt = (new Database())->query()->prepare($query);
+
+    $stmt->execute([
+      "id" => $id
+    ]);
+
+    $usuario = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $_SESSION['user'] = $usuario[0];
+
+    return $response
+      ->withHeader("Location",  "{$_ENV['BASE_URL']}/me/perfil?message=Perfil%20atualizado%20com%20sucesso!")
+      ->withStatus(301);
+  }
+
+  public function drop(Request $request, Response $response): Response
+  {
+    $id = $request->getAttribute('id');
+
+    $query = "
+      DELETE
+      FROM usuario
+      WHERE usuario.id_usuario = :id
+    ";
+
+    $stmt = (new Database())->query()->prepare($query);
+
+    $stmt->execute([
+      "id"       => $id
+    ]);
+
+    return $response
+      ->withHeader("Location",  "{$_ENV['BASE_URL']}/?message=Perfil%deletado%20com%20sucesso!")
+      ->withStatus(301);
+  }
+
+  public function upload_avatar(Request $request, Response $response): Response
+  {
+    $file = $request->getUploadedFiles();
+
+    /**
+     * @var UploadedFile 
+     */
+    $avatar = $file['avatar'];
+    $maxFileSize = 2 * 1024 * 1024;
+    $allowedTypes = ['jpg', 'jpeg', 'png'];
+
+    if (!isset($avatar) || $avatar->getError() !== UPLOAD_ERR_OK) {
+      return $response
+        ->withHeader("Location",  "{$_ENV['BASE_URL']}/?message=Nenhum%20arquivo%20foi%20enviado%20ou%20ocorreu%20um%20erro.")
+        ->withStatus(301);
+    }
+
+    if ($avatar->getSize() > $maxFileSize) {
+      return $response
+        ->withHeader("Location",  "{$_ENV['BASE_URL']}/?message=O%20arquivo%20excede%20o%20tamanho%20máximo%20permitido.")
+        ->withStatus(301);
+    }
+
+    [$type, $extension] = explode('/', $avatar->getClientMediaType());
+
+    if (!in_array($extension, $allowedTypes)) {
+      return $response
+        ->withHeader("Location",  "{$_ENV['BASE_URL']}/?message=Tipo%20de%20arquivo%20não%20permitido.%20Apenas%20JPG,%20JPEG,%20PNG%20e%20são%20aceitos.")
+        ->withStatus(301);
+    }
+
+    $newFileName = uniqid('avatar_', true) . '.' . $extension;
+    $uploadPath = __DIR__ . '/../../..' . $_ENV['UPLOAD_DIR'];
+
+    if (!file_exists($uploadPath)) {
+      $response
+        ->withHeader("Location",  "{$_ENV['BASE_URL']}/?message=Pasta%20de%20uploads%20não%20existe!")
+        ->withStatus(301);
+    }
+
+    $avatar->moveTo($uploadPath . $newFileName);
+    $query = "UPDATE usuario SET usuario.avatar_usuario = :avatar_url WHERE usuario.id_usuario = :id";
+    $stmt = (new Database())->query()->prepare($query);
+
+    $id_usuario = $_SESSION['user']['id_usuario'];
+
+    $stmt->execute([
+      "id" => $id_usuario,
+      "avatar_url" => "{$_ENV['BASE_URL']}/assets/upload/{$newFileName}"
+    ]);
+
+    $query = "SELECT * FROM usuario WHERE usuario.id_usuario = :id";
+    $stmt = (new Database())->query()->prepare($query);
+
+    $stmt->execute([
+      "id" => $id_usuario
+    ]);
+
+    $usuario = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $_SESSION['user'] = $usuario[0];
+
+    return $response
+      ->withHeader("Location",  "{$_ENV['BASE_URL']}/?message=Foto%20enviada%20com%20sucesso!")
+      ->withStatus(301);
+  }
+
+  public function formexp(Request $request, Response $response): Response
+  {
+    $formexp = $_POST['formexp'];
+
+    $gravar = (new Database())->query()->prepare("INSERT INTO formacao_experiencia (`titulo_form_exp`, `id_usuario`) VALUES (:titulo, :usuario)");
+
+    $gravar->execute([
+      "titulo" => $formexp,
+      "usuario" => $_SESSION['user']['id_usuario']
+    ]);
+
+    return $response
+      ->withHeader("Location",  "{$_ENV['BASE_URL']}/me/perfil?message=Formação/Experiência%20inserida%20com%20sucesso!")
       ->withStatus(301);
   }
 }
