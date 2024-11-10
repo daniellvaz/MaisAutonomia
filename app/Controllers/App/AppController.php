@@ -32,7 +32,7 @@ class AppController extends Controller
       "message" => isset($queries['message']) ? $queries['message'] : null
     ]);
   }
-
+   
   public function profile(Request $request, Response $response)
   {
     return $this->view->render($response, 'profile.html');
@@ -40,7 +40,7 @@ class AppController extends Controller
 
   public function delete(Request $request, Response $response)
   {
-    // Pegar o id da url
+    // Pegar o id da url 
     $id = $_GET['id'];
     // Criar o script de deletar
     $deletar = "DELETE FROM usuario WHERE id_user = :id";
