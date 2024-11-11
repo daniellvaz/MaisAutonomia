@@ -55,8 +55,16 @@ class ServiceController extends Controller
     $titulo_servicos = $_POST['titulo_servicos'];
     $desc_servicos   = $_POST['desc_servicos'];
     $valor_servicos  = $_POST['valor_servicos'];
-    $prazo_servicos  = $_POST['prazo_servicos'];
+    $prazo_servicos = $_POST['prazo_servicos'];
+    $hora_atual = new DateTime();
+    $hora_limite = clone $hora_atual;
+    $hora_limite->modify('+24 hours');
 
+    if (new DateTime($prazo_servicos) < $hora_limite) {
+    echo "O prazo para os serviços deve ser superior a 24 horas a partir do momento atual.";
+    exit;
+    }
+    
     $stmt = $conn->query()->prepare("
       INSERT INTO servicos 
       (titulo_servicos, desc_servicos, valor_servicos, prazo_servicos, id_cliente) 
