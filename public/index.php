@@ -22,6 +22,29 @@ $twig = Twig::create(__DIR__ . '/../resources/views', ['cache' => false]);
 $app = AppFactory::create();
 $app->setBasePath($_ENV['BASE_PATH']);
 
+$app->add(function ($request, $response, $next) {
+  $route = $request->getAttribute("route");
+
+  $methods = [];
+
+  if (!empty($route)) {
+    $pattern = $route->getPattern();
+
+    foreach ($this->router->getRoutes() as $route) {
+      if ($pattern === $route->getPattern()) {
+        $methods = array_merge_recursive($methods, $route->getMethods());
+      }
+    }
+  } else {
+    $methods[] = $request->getMethod();
+  }
+
+  $response = $next($request, $response);
+
+
+  return $response->withHeader("Access-Control-Allow-Methods", implode(",", $methods));
+});
+
 $app->add(TwigMiddleware::create($app, $twig));
 $app->get('/assets/{file:.+}', function (Request $request, Response $response, array $args) {
   $filePath = __DIR__ . '/../resources/assets/' . $args['file'];
