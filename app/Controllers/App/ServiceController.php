@@ -145,7 +145,7 @@ class ServiceController extends Controller
     public function delete(Request $request, Response $response): Response
     {
         $id    = $request->getAttribute('id');
-        $query = "DELETE FROM servicos s WHERE s.id_servicos = :id";
+        $query = "DELETE FROM `servicos` WHERE `servicos`.`id_servicos` = :id";
         $stmt  = (new Database())->query()->prepare($query);
 
         $stmt->execute([
@@ -153,7 +153,7 @@ class ServiceController extends Controller
         ]);
 
         return $response
-            ->withHeader("Location", $_ENV['BASE_URL'] . "/me/inicio?message=Serviço%20deletado%20com%20sucesso")
-            ->withStatus(301);
+        ->withHeader("Location", $_ENV['BASE_URL'] . "/me/inicio?message=Serviço%20deletado%20com%20sucesso")
+        ->withStatus(301);
     }
 }

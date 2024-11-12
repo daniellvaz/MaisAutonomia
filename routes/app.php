@@ -13,14 +13,14 @@ $app->get('/me/menssagens', [AppController::class, 'messages']);
 $app->get('/me/servicos/{id}', [ServiceController::class, 'show']);
 $app->post('/me/servicos/cadastro', [ServiceController::class, 'store']);
 $app->post('/me/servicos/atualiza/{id}', [ServiceController::class, 'update']);
-$app->delete('/me/servicos/deletar/{id}', [ServiceController::class, 'delete']);
+$app->get('/me/servicos/deletar/{id}', [ServiceController::class, 'delete']);
 
 $app->get('/me/propostas', [ProposalController::class, 'index']);
 $app->get('/me/proposta/{id}', [ProposalController::class, 'details']);
 $app->get('/me/servico/{id_servico}/proposta', [ProposalController::class, 'show']);
 $app->post('/me/servico/{id_servico}/proposta', [ProposalController::class, 'store']);
 $app->post('/me/proposta/{id}/atualizar', [ProposalController::class, 'update']);
-$app->patch('/me/proposta/{id}/atualizar/{status}/usuario/{autonomo}', [ProposalController::class, 'updateStatus']);
+$app->get('/me/proposta/{id}/atualizar/{status}/usuario/{autonomo}', [ProposalController::class, 'updateStatus']);
 
 $app->post('/me/perfil/formexp', [AccountController::class, 'formexp']);
 $app->post('/me/perfil/atualiza/{id}', [AccountController::class, 'update']);

@@ -195,8 +195,10 @@ class ProposalController extends Controller
       "autonomo" => $id_autonomo
     ]);
 
+
     return $response
-      ->withHeader("Location", $_ENV['BASE_URL'] . "/me/servicos/{$proposta[0]['id_servico']}?message=Proposta%20{$status}!")
-      ->withStatus(301);
+    ->withHeader("Location", $_ENV['BASE_URL'] . "/me/servicos/{$proposta[0]['id_servico']}?message=Proposta%20{$status}!")
+    ->withStatus(301);
+    
   }
 }

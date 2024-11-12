@@ -60,20 +60,20 @@
                         </div>
                         {% if servico.id_cliente == user.id_usuario %}
                             <div class="card-footer">
-                                <button class="btn btn-primary" onclick="atualizarServico('Aprovada', {{ proposta.id_proposta }}, {{ proposta.id_usuario }})"
-                                    {% if proposta.status_proposta == 'Aprovada' or proposta.status_proposta == 'Rejeitada' %}
-                                        disabled
-                                    {% endif %}
-                                >
-                                    Aprovar
-                                </button>
-                                <button class="btn btn-danger" onclick="atualizarServico('Rejeitada', {{ proposta.id_proposta }}, {{ proposta.id_usuario }})"
-                                    {% if proposta.status_proposta == 'Rejeitada' %}
-                                        disabled
-                                    {% endif %}
-                                >
-                                    Rejeitar
-                                </button>
+                                {% if proposta.status_proposta == 'Rejeitada' %}
+                                    <p>Essa proposta foi rejeitada</p>
+                                {% elseif proposta.status_proposta == 'Aprovada' %}
+                                    <a class="btn btn-danger" href="{{ url("/me/proposta/#{proposta.id_proposta}/atualizar/Rejeitada/usuario/#{proposta.id_usuario}") }}">
+                                        Rejeitar
+                                    </a>
+                                {% else %}
+                                    <a class="btn btn-primary" href="{{ url("/me/proposta/#{proposta.id_proposta}/atualizar/Aprovada/usuario/#{proposta.id_usuario}") }}">
+                                        Aprovar
+                                    </a>
+                                    <a class="btn btn-danger" href="{{ url("/me/proposta/#{proposta.id_proposta}/atualizar/Rejeitada/usuario/#{proposta.id_usuario}") }}">
+                                        Rejeitar
+                                    </a>
+                                {% endif %}
                             </div>
                         {% endif %}
                     </div>
@@ -120,7 +120,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="valor_servicos" class="form-label">Valor do Serviço (R$)</label>
-                        <input type="text" class="form-control" id="valor_servicos" name="valor_servicos" value="{{ servico.valor_servicos }}">
+                        <input step="any" type="text" class="form-control" id="valor_servicos" name="valor_servicos" value="{{ servico.valor_servicos }}">
                     </div>
                     <button type="submit" class="btn btn-primary">Atualizar Pedido</button>
                 </form>
@@ -141,41 +141,9 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-danger" onclick="deletarServico()">Deletar</button>
+                <a href="{{ url("/me/servicos/deletar/#{servico.id_servicos}") }}" class="btn btn-danger">Deletar</a>
             </div>
         </div>
     </div>
 </div>
 {% endblock content %}
-
-{% block script %}
-    <script>
-        const deletarServico = async () => {
-            try {
-                const id = "{{ servico.id_servicos }}"
-                const response = await fetch(`{{ url("/me/servicos/deletar/") }}${id}`, {
-                    method: "DELETE"
-                });
-
-                window.location = response.url
-            } catch (error) {
-                alert(error.message)
-            }
-        }
-
-        const atualizarServico = async (status, id, autonomo) => {
-            try {
-                const payload = {
-                    status
-                }
-                const response = await fetch(`{{ url("/me/proposta/${id}/atualizar/${status}/usuario/${autonomo}") }}`, {
-                    method: "PATCH"
-                });
-
-                window.location = response.url
-            } catch (error) {
-                alert(error.message)
-            }
-        }
-    </script>
-{% endblock script %}
