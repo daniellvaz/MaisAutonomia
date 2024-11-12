@@ -161,7 +161,7 @@ class AccountController extends Controller
     $_SESSION['user'] = $usuario[0];
 
     return $response
-      ->withHeader("Location",  "{$_ENV['BASE_URL']}/me/perfil?message=Perfil%20atualizado%20com%20sucesso!")
+      ->withHeader("Location",  "{$_ENV['BASE_URL']}/me/perfil/{$id}?message=Perfil%20atualizado%20com%20sucesso!")
       ->withStatus(301);
   }
 
@@ -257,6 +257,14 @@ class AccountController extends Controller
   {
     $formexp = $_POST['formexp'];
 
+    $item_vazio = empty($formexp);
+
+    if ($item_vazio) {
+      return $response
+        ->withHeader("Location",  "{$_ENV['BASE_URL']}/me/perfil/{$_SESSION['user']['id_usuario']}?message=Por%20favor,%20nsira%20um%20valor")
+        ->withStatus(301);
+    }
+
     $gravar = (new Database())->query()->prepare("INSERT INTO formacao_experiencia (`titulo_form_exp`, `id_usuario`) VALUES (:titulo, :usuario)");
 
     $gravar->execute([
@@ -265,7 +273,7 @@ class AccountController extends Controller
     ]);
 
     return $response
-      ->withHeader("Location",  "{$_ENV['BASE_URL']}/me/perfil?message=Formação/Experiência%20inserida%20com%20sucesso!")
+      ->withHeader("Location",  "{$_ENV['BASE_URL']}/me/perfil/{$_SESSION['user']['id_usuario']}?message=Formação/Experiência%20inserida%20com%20sucesso!")
       ->withStatus(301);
   }
 }
