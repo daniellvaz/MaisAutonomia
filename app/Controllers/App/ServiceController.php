@@ -61,13 +61,15 @@ class ServiceController extends Controller
         $hora_limite->modify('+24 hours');
 
         if (new \DateTime($prazo_servicos) < $hora_limite) {
-            echo "O prazo para os serviços deve ser superior a 24 horas a partir do momento atual.";
-            exit;
+            return $response
+                ->withHeader("Location", $_ENV['BASE_URL'] . "/me/inicio?message=O%20prazo%20para%20os%20serviços%20deve%20ser%20superior%20a%2024%20horas%20a%20partir%20do%20momento%20atual.")
+                ->withStatus(301);
         }
 
         if (!isset($_SESSION['user']['id_usuario'])) {
-            echo "Erro: id_cliente não está definido na sessão.";
-            exit;
+            return $response
+                ->withHeader("Location", $_ENV['BASE_URL'] . "/me/inicio?message=Erro: id_cliente não está definido na sessão.")
+                ->withStatus(301);
         }
 
         $id_cliente = $_SESSION['user']['id_usuario'];
