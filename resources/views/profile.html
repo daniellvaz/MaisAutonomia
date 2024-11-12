@@ -108,7 +108,24 @@
           <button class="btn btn-primary" form="avaliacao">Enviar</button>
         </form>
       {% endif %}
-    </div>
+
+      <div>
+        <h5 class="card-title mt-5">Avaliação do Serviço</h5>
+        {% for avaliacao in avaliacoes %} 
+          <div class="card my-4">
+            <div class="card-body">
+              {% if avaliacao %}
+                <p><strong>Título:</strong> {{ avaliacao.titulo_avaliacao }}</p>
+                <p><strong>Nota:</strong> {{ avaliacao.range_avaliacao }} / 5</p>
+                <p><strong>Comentário:</strong> {{ avaliacao.desc_avaliacao }}</p>
+              {% else %}
+                  <p>Nenhuma avaliação enviada ainda.</p>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+  </div>
   </div>
 </main>
 

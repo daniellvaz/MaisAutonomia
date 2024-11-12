@@ -39,41 +39,51 @@ class AppController extends Controller
     $id = $request->getAttribute('id_usuario');
 
     $query = "SELECT * FROM usuario u WHERE u.id_usuario = :usuario";
-    $stmt = (new Database())->query()->prepare($query);
-    $stmt->execute([
+    $usuario_stmt = (new Database())->query()->prepare($query);
+    $usuario_stmt->execute([
       "usuario" => $id
     ]);
 
-    $usuario = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $usuario = $usuario_stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $query = "SELECT * FROM formacao_experiencia f WHERE f.id_usuario = :usuario";
-    $stmt = (new Database())->query()->prepare($query);
-    $stmt->execute([
+    $formexp_stmt = (new Database())->query()->prepare($query);
+    $formexp_stmt->execute([
       "usuario" => $id
     ]);
+
+    $query = "SELECT * FROM avaliacao a WHERE a.id_usuario = :usuario";
+
+    $avaliacoes_stmt = (new Database())->query()->prepare($query);
+    $avaliacoes_stmt->execute([
+      "usuario" => $id
+    ]);
+
+    $avaliacoes = $avaliacoes_stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $pode_avaliar = false;
 
     if ($id !== $_SESSION['user']['id_usuario']) {
       $query = "SELECT COUNT(*) total FROM servicos s WHERE s.id_autonomo = :usuario";
-      $stmt = (new Database())->query()->prepare($query);
-      $stmt->execute([
+      $servicos_stmt = (new Database())->query()->prepare($query);
+      $servicos_stmt->execute([
         "usuario" => $id
       ]);
 
-      $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $resultado = $servicos_stmt->fetchAll(PDO::FETCH_ASSOC);
 
       if ($resultado > 0) {
         $pode_avaliar = true;
       }
     }
 
-    $formexps = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    $formexps = $formexp_stmt->fetchAll(PDO::FETCH_ASSOC);
+    
     return $this->view->render($response, 'profile.html', [
       "usuario"      => $usuario[0],
       "formexps"     => $formexps,
-      "pode_avaliar" => $pode_avaliar
+      "pode_avaliar" => $pode_avaliar,
+      "avaliacoes"   => $avaliacoes
     ]);
   }
 
@@ -123,14 +133,13 @@ class AppController extends Controller
 
       $id_servicos = $id_servicos[0]['id_servicos'];
 
-      $query = "INSERT INTO avaliacao (id_usuario, id_servicos, titulo_avaliacao, desc_avaliacao, range_avaliacao)
-                VALUES (:id_usuario, :id_servicos, :titulo_avaliacao, :desc_avaliacao, :range_avaliacao)";
+      $query = "INSERT INTO avaliacao (id_usuario, titulo_avaliacao, desc_avaliacao, range_avaliacao)
+                VALUES (:id_usuario, :titulo_avaliacao, :desc_avaliacao, :range_avaliacao)";
 
       $stmt = (new Database())->query()->prepare($query);
 
       $stmt->execute([
-          "id_usuario" => $_SESSION['user']['id_usuario'], 
-          "id_servicos" => $id_servicos,  
+        "id_usuario" => $id_usuario, 
           "titulo_avaliacao" => "Avaliação de serviço", 
           "desc_avaliacao" => $avaliacao, 
           "range_avaliacao" => $range, 
