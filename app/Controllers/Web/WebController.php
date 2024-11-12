@@ -24,15 +24,13 @@ class WebController extends Controller
 
   public function jobs(Request $request, Response $response): Response
   {
-    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    $results_per_page = 5;
-    $offset = ($page - 1) * $results_per_page;
+    $offset = ($this->page - 1) * 5;
 
     $query = "
       SELECT 
         *
       FROM servicos s 
-      LIMIT {$results_per_page} OFFSET {$offset}
+      LIMIT 5 OFFSET {$offset}
     ";
 
     $stmt = (new Database())->query()->prepare($query);
@@ -46,7 +44,8 @@ class WebController extends Controller
 
     return $this->view->render($response, 'jobs.html', [
       "servicos" => $servicos,
-      "total"    => $total[0]['total']
+      "page"     => $this->page,
+      "has_more" => true
     ]);
   }
 

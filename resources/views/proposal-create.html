@@ -2,9 +2,9 @@
 {% block title %}Mais Autonomia | Propsta {% endblock %}
 {% block content %}
 {% include 'components/header.html' %}
-<div class="container my-5">
+<div class="container my-5 min-vh-100">
     <h2 class="text-center mb-4">Enviar Proposta</h2>
-    <form method="post" action="{{ url("/me/proposta/#{id_servico}/nova") }}">
+    <form method="post" action="{{ url("/me/servico/#{id_servico}/proposta") }}">
         <div class="mb-3">
             <label for="valor_proposta" class="form-label">Valor da Proposta (R$)</label>
             <input type="number" class="form-control" id="valor_proposta" name="valor_proposta" placeholder="Ex: 500.00" required>
@@ -12,7 +12,7 @@
 
         <div class="mb-3">
             <label for="descricao_proposta" class="form-label">Descrição da Proposta</label>
-            <textarea class="form-control" id="descricao_proposta" name="descricao_proposta" rows="5" placeholder="Descreva sua proposta detalhadamente..." required></textarea>
+            <textarea class="form-control" id="descricao_proposta" name="descricao_proposta" rows="5" placeholder="Descreva sua proposta detalhadamente..." required>{% if proposta %}{{proposta.descricao_proposta}}{% endif %}</textarea>
         </div>
 
         <button type="submit" class="btn btn-primary w-100">Enviar Proposta</button>

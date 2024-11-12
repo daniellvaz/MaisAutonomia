@@ -21,7 +21,7 @@
                             </button> 
                        </div>  
                     {% else %}
-                        <a href="{{ url("/me/proposta/#{servico.id_servicos}") }}" class="btn btn-outline-primary float-end">
+                        <a href="{{ url("/me/servico/#{servico.id_servicos}/proposta") }}" class="btn btn-outline-primary float-end">
                             Fazer uma proposta
                         </a>
                     {% endif %}
@@ -37,43 +37,52 @@
                         <p class="mb-1"><strong>Prazo de Entrega:</strong> {{ servico.prazo_servicos|date('d/m/Y') }}</p>
                         <p class="mb-1"><strong>Status:</strong> {{ servico.status_servicos }}</p>
                     </div>
-                    <hr>
-                
-                    {% if propostas %}
-                        {% for proposta in propostas  %}
-                            <div class="card">
-                                <div class="card-header">
-                                    <h6 class="fw-bold">{{ proposta.nome_usuario }}</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p class="mb-1"><strong>Telefone:</strong> {{ proposta.telefone_usuario }}</p>
-                                    <p class="mb-1"><strong>E-mail:</strong> {{ proposta.email_usuario }}</p>
-                                    {% if servico.id_cliente == user.id_usuario %}
-                                        <p class="mb-1"><strong>Valor:</strong> {{ proposta.valor_proposta|format_currency('BRL') }}</p>
-                                    {% endif %}
-                                    <hr>
-                                    <p>{{ proposta.descricao_proposta }}</p>
-                                </div>
-                                {% if servico.id_cliente == user.id_usuario %}
-                                    <div class="card-footer">
-                                        <button class="btn btn-primary">
-                                            Aceitar
-                                        </button>
-                                        <button class="btn btn-danger">
-                                            Rejeitar
-                                        </button>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                    <div class="mb-3">
-                        <p class="mb-1">Aguardando propostas</p>
-                    </div>
-                    {% endif %}
                 </div>
-                
             </div>
+        </div>
+
+        <div class="col-md-12 mt-4">
+            <h2>Propostas</h2>
+            {% if propostas %}
+                {% for proposta in propostas  %}
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h6 class="fw-bold">{{ proposta.nome_usuario }}</h6>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-1"><strong>Telefone:</strong> {{ proposta.telefone_usuario }}</p>
+                            <p class="mb-1"><strong>E-mail:</strong> {{ proposta.email_usuario }}</p>
+                            {% if servico.id_cliente == user.id_usuario %}
+                                <p class="mb-1"><strong>Valor:</strong> {{ proposta.valor_proposta|format_currency('BRL') }}</p>
+                            {% endif %}
+                            <hr>
+                            <p>{{ proposta.descricao_proposta }}</p>
+                        </div>
+                        {% if servico.id_cliente == user.id_usuario %}
+                            <div class="card-footer">
+                                <button class="btn btn-primary" onclick="atualizarServico('Aprovada', {{ proposta.id_proposta }}, {{ proposta.id_usuario }})"
+                                    {% if proposta.status_proposta == 'Aprovada' or proposta.status_proposta == 'Rejeitada' %}
+                                        disabled
+                                    {% endif %}
+                                >
+                                    Aprovar
+                                </button>
+                                <button class="btn btn-danger" onclick="atualizarServico('Rejeitada', {{ proposta.id_proposta }}, {{ proposta.id_usuario }})"
+                                    {% if proposta.status_proposta == 'Rejeitada' %}
+                                        disabled
+                                    {% endif %}
+                                >
+                                    Rejeitar
+                                </button>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="mb-3">
+                    <p class="mb-1">Aguardando propostas</p>
+                </div>
+            {% endif %}
         </div>
     </div>
 </main>
@@ -150,7 +159,22 @@
 
                 window.location = response.url
             } catch (error) {
-                
+                alert(error.message)
+            }
+        }
+
+        const atualizarServico = async (status, id, autonomo) => {
+            try {
+                const payload = {
+                    status
+                }
+                const response = await fetch(`{{ url("/me/proposta/${id}/atualizar/${status}/usuario/${autonomo}") }}`, {
+                    method: "PATCH"
+                });
+
+                window.location = response.url
+            } catch (error) {
+                alert(error.message)
             }
         }
     </script>

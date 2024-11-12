@@ -1,0 +1,40 @@
+{% extends 'templates/layout.html' %}
+{% block title %}Mais Autonomia | Propsta {% endblock %}
+{% block content %}
+{% include 'components/header.html' %}
+<div class="container mt-5">
+    <h2>Detalhes da Proposta</h2>
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Serviço: {{ proposta.titulo_servicos }}</h5>
+            <p class="card-text"><strong>Data de Envio:</strong> {{ proposta.data_criacao_proposta|date("d/m/Y") }}</p>
+            <p class="card-text"><strong>Orçamento previsto:</strong> {{ proposta.valor_servicos|format_currency('BRL') }}</p>
+            <p class="card-text"><strong>Orçamento enviado:</strong> {{ proposta.valor_proposta|format_currency('BRL') }}</p>
+            <p class="card-text"><strong>Status:</strong>
+                {% if proposta.status_proposta == 'Aprovada' %}
+                    <span class="badge bg-success">{{ proposta.status_proposta }}</span>
+                {% elseif proposta.status_proposta == 'Rejeitada' %}
+                    <span class="badge bg-danger">{{ proposta.status_proposta }}</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">{{ proposta.status_proposta }}</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <h3 class="mt-5 mb-4">Melhorar Proposata</h3>
+    <form method="POST" action="{{ url("/me/proposta/#{ proposta.id_proposta }/atualizar") }}">
+        <div class="mb-3">
+            <label for="valor" class="form-label">Valor da Proposta</label>
+            <input type="text" class="form-control" id="valor_proposta" name="valor_proposta" value="{{ proposta.valor_proposta }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary"
+            {% if proposta.status_proposta == 'Rejeitada' %}
+                disabled
+            {% endif %}
+        >
+            Atualizar Proposta
+        </button>
+    </form>
+</div>
+{% endblock %}

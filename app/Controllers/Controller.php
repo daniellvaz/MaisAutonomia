@@ -12,8 +12,10 @@ class Controller
    * Summary of view
    * @var \Slim\Views\Twig $view
    */
-  public $view = null;
-  public $message = null;
+  public Twig|null $view = null;
+  public ?array $message = null;
+
+  public int $page = 1;
 
   /**
    * Class constructor.
@@ -40,6 +42,10 @@ class Controller
       ];
 
       $this->view->offsetSet('message', $this->message);
+    }
+
+    if (isset($_GET['page'])) {
+      $this->page = intval($_GET['page']);
     }
   }
 }
