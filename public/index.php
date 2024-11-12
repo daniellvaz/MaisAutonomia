@@ -8,8 +8,8 @@ use Dotenv\Dotenv;
 use Slim\Views\Twig;
 use Slim\Factory\AppFactory;
 use Slim\Views\TwigMiddleware;
-use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 require __DIR__ . "/../vendor/autoload.php";
 
@@ -26,16 +26,12 @@ $app->add(TwigMiddleware::create($app, $twig));
 $app->get('/assets/{file:.+}', function (Request $request, Response $response, array $args) {
   $filePath = __DIR__ . '/../resources/assets/' . $args['file'];
 
-  // Verifica se o arquivo existe
   if (!file_exists($filePath)) {
     return $response->withStatus(404);
   }
 
-  // Define o tipo de conteúdo corretamente
   $fileType = mime_content_type($filePath);
   $response = $response->withHeader('Content-Type', $fileType);
-
-  // Lê o conteúdo do arquivo
   $response->getBody()->write(file_get_contents($filePath));
 
   return $response;
